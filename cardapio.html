@@ -19,13 +19,13 @@
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="O Sobrado">
 
-  <title>Cardápio Digital — O Sobrado</title>
+  <title>Hamburgueria Texas - Cardápio Digital</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/jpeg" href="assets/images/Logo_Sobrado.jpg">
+  <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
 
   <!-- Estilos da Aplicação -->
-  <link rel="stylesheet" href="assets/css/styles.css?v=2.7">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2.8">
 </head>
 
 <body>
@@ -35,12 +35,19 @@
     <!-- Barra Superior Fixa do ADM (Visível quando autenticado) -->
     <aside class="admin-top-bar" id="adminTopBar" style="display: none;" aria-label="Painel Administrativo">
       <div class="admin-top-bar-inner">
-        <!-- Linha 1: Status "⚡ Painel ADM" à esquerda + "Sair do ADM" à direita -->
-        <div class="admin-top-bar-header-row">
-          <div class="admin-top-bar-badge">
-            <span class="admin-pulse-dot" aria-hidden="true"></span>
-            <span class="admin-top-bar-text">⚡ Painel ADM</span>
-          </div>
+        <div class="admin-top-bar-badge">
+          <span class="admin-pulse-dot" aria-hidden="true"></span>
+          <span class="admin-top-bar-text">⚡ Painel ADM</span>
+        </div>
+        <div class="admin-top-bar-actions">
+          <button type="button" class="btn-admin-bar btn-admin-bar-new btn-admin-action" id="btnAdminNewProduct" aria-label="Criar novo produto">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>+ Novo Produto</span>
+          </button>
           <button type="button" class="btn-admin-bar btn-admin-bar-logout btn-admin-action" id="btnAdminLogout" title="Sair do modo administrador" aria-label="Sair do modo administrador">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
@@ -49,27 +56,6 @@
               <line x1="21" y1="12" x2="9" y2="12"></line>
             </svg>
             <span>Sair do ADM</span>
-          </button>
-        </div>
-
-        <!-- Linha 2: "Sincronizar Base" + "+ Novo Produto" -->
-        <div class="admin-top-bar-actions admin-bar-actions">
-          <button type="button" class="btn-admin-bar btn-admin-bar-sync btn-admin-action" id="btnAdminSyncSupabase" title="Sincronizar cardápio base para o banco Supabase" aria-label="Sincronizar cardápio base para o Supabase">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-              <path d="M3 3v5h5"></path>
-              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
-              <path d="M16 21h5v-5"></path>
-            </svg>
-            <span>Sincronizar Base</span>
-          </button>
-          <button type="button" class="btn-admin-bar btn-admin-bar-new btn-admin-action" id="btnAdminNewProduct" aria-label="Criar novo produto">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            <span>+ Novo Produto</span>
           </button>
         </div>
       </div>
@@ -88,11 +74,11 @@
 
         <!-- Marca e Título -->
         <div class="header-brand">
-          <img src="assets/images/Logo_Sobrado.jpg" alt="Logo Sobrado" class="header-logo-mini" width="34"
+          <img src="assets/images/logo.jpg" alt="Logo Hamburgueria Texas" class="header-logo-mini" width="34"
             height="34" />
           <div class="header-title-box">
-            <span class="header-title">Sobrado</span>
-            <span class="header-desc">Burger & Bar</span>
+            <span class="header-title">Hamburgueria Texas</span>
+            <span class="header-desc">Burger & Pizza</span>
           </div>
         </div>
       </div>
@@ -309,18 +295,18 @@
           </svg>
         </div>
 
-        <h2 class="wifi-modal-title" id="wifiModalTitle">Wi-Fi d'O Sobrado</h2>
+        <h2 class="wifi-modal-title" id="wifiModalTitle">Wi-Fi Hamburgueria Texas</h2>
         <p class="wifi-modal-desc">Conecte-se gratuitamente à nossa rede exclusiva para clientes.</p>
 
         <!-- Visualização Padrão das Credenciais -->
         <div class="wifi-info-card" id="wifiDisplayView">
           <div class="wifi-row">
             <span class="wifi-row-label">Nome da Rede (SSID)</span>
-            <span class="wifi-row-value wifi-ssid-value" id="wifiModalSsidVal">O Sobrado - Clientes</span>
+            <span class="wifi-row-value wifi-ssid-value" id="wifiModalSsidVal"><span id="wifiSsidText">--</span></span>
           </div>
           <div class="wifi-row">
             <span class="wifi-row-label">Senha de Acesso</span>
-            <span class="wifi-row-value wifi-password-value" id="wifiModalPasswordVal">sobradoburger</span>
+            <span class="wifi-row-value wifi-password-value" id="wifiModalPasswordVal"><span id="wifiPasswordText">--</span></span>
           </div>
         </div>
 
@@ -328,11 +314,11 @@
         <div class="wifi-edit-form" id="wifiEditForm" style="display: none;">
           <div class="wifi-edit-field">
             <label class="wifi-edit-label" for="wifiEditSsidInput">Nome da Rede (SSID)</label>
-            <input type="text" class="wifi-edit-input" id="wifiEditSsidInput" placeholder="Ex: O Sobrado - Clientes" autocomplete="off" />
+            <input type="text" class="wifi-edit-input" id="wifiEditSsidInput" placeholder="Ex: Texas - Clientes" autocomplete="off" />
           </div>
           <div class="wifi-edit-field">
             <label class="wifi-edit-label" for="wifiEditPasswordInput">Senha de Acesso</label>
-            <input type="text" class="wifi-edit-input" id="wifiEditPasswordInput" placeholder="Ex: sobradoburger" autocomplete="off" />
+            <input type="text" class="wifi-edit-input" id="wifiEditPasswordInput" placeholder="Ex: texashamburgueria" autocomplete="off" />
           </div>
           <div class="wifi-edit-actions">
             <button type="button" class="btn-wifi-edit-cancel" id="btnCancelWifiEdit">Cancelar</button>
@@ -506,17 +492,20 @@
             />
           </div>
 
-          <!-- Imagem (Caminho ou URL) -->
+          <!-- Foto do Produto -->
           <div class="admin-form-group">
-            <label for="adminProdImage" class="admin-form-label">
-              Caminho / URL da Imagem
-            </label>
-            <input 
-              type="text" 
-              id="adminProdImage" 
-              class="admin-form-input" 
-              placeholder="Ex: assets/images/products/plt.png ou https://..." 
-            />
+            <label class="admin-form-label">Foto do Produto</label>
+            <div class="admin-upload-container">
+              <input type="file" id="adminProdFileInput" accept="image/*" style="display: none;">
+              <input type="hidden" id="adminProdImageUrl" value="">
+              <button type="button" class="btn-admin-choose-file" id="btnAdminChooseFile" onclick="document.getElementById('adminProdFileInput').click()">
+                <span>📷</span> <span id="btnAdminChooseFileText">Escolher foto do dispositivo</span>
+              </button>
+              <div id="adminImagePreviewContainer" class="admin-image-preview-container" style="display: none; margin-top: 8px;">
+                <img id="adminImagePreview" src="" alt="Prévia" style="width: 72px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                <button type="button" id="btnAdminRemoveImage" style="background: none; border: none; color: #DC2626; font-size: 0.8rem; cursor: pointer; margin-left: 8px;">Remover foto</button>
+              </div>
+            </div>
           </div>
 
           <!-- Opções e Checkboxes -->
@@ -632,9 +621,9 @@
   </div>
 
   <!-- Scripts -->
-  <script src="assets/js/products.js?v=2.7"></script>
-  <script src="assets/js/supabase.js?v=2.7"></script>
-  <script src="assets/js/app.js?v=2.7"></script>
+  <script src="assets/js/products.js?v=2.8"></script>
+  <script src="assets/js/supabase.js?v=2.8"></script>
+  <script src="assets/js/app.js?v=2.8"></script>
 </body>
 
 </html>

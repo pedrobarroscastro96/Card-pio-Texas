@@ -7,11 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });
 
-function initApp() {
+async function initApp() {
   const currentTable = getActiveTable();
 
   // Inicializa o gerenciador de Wi-Fi (carrega localStorage e sincroniza com Supabase)
-  WifiManager.init();
+  if (typeof WifiManager !== 'undefined') {
+    await WifiManager.init();
+  }
 
   // Identifica a página atual
   const isMenuPage = document.getElementById('menuAppContainer') !== null;
@@ -22,7 +24,7 @@ function initApp() {
   }
 
   if (isMenuPage) {
-    initMenu(currentTable);
+    await initMenu(currentTable);
   }
 
   initWifiModal();
@@ -89,7 +91,7 @@ function initHub(table) {
  * 3. LÓGICA DO CARDÁPIO DIGITAL (CARDAPIO.HTML)
  * ---------------------------------------------------------------------
  */
-function initMenu(table) {
+async function initMenu(table) {
   const tableBadge = document.getElementById('headerTableBadge');
   const tableText = document.getElementById('headerTableText');
   const backHubLink = document.getElementById('btnBackHub');
@@ -121,8 +123,11 @@ function initMenu(table) {
   setupProductDrawer();
   initCart();
 
-  // Sincronização inicial com o Supabase (com fallback resiliente)
+  // Sincronização inicial com o Supabase
   loadProductsFromSupabase();
+  if (typeof WifiManager !== 'undefined') {
+    await WifiManager.loadFromSupabase();
+  }
 }
 
 /**
@@ -1059,19 +1064,19 @@ function renderDrawerAddons(product) {
  * ---------------------------------------------------------------------
  */
 const WifiManager = {
-  LOCAL_STORAGE_KEY: 'sobrado_wifi_config',
+  LOCAL_STORAGE_KEY: 'texas_wifi_config',
   defaultConfig: {
-    ssid: 'O Sobrado - Clientes',
-    password: 'sobradoburger'
+    ssid: '',
+    password: ''
   },
 
-  init() {
-    // 1. Aplica dados locais imediatamente (sem flash de dados antigos)
+  async init() {
+    // 1. Aplica dados locais se existirem para evitar layout shift
     const current = this.getWifiConfig();
     this.applyToDOM(current);
 
-    // 2. Tenta sincronizar com Supabase em segundo plano
-    this.syncFromSupabase();
+    // 2. Busca e sincroniza do Supabase
+    await this.loadFromSupabase();
 
     // 3. Sincroniza em tempo real se alterado em outra aba
     window.addEventListener('storage', (e) => {
@@ -1081,15 +1086,38 @@ const WifiManager = {
     });
   },
 
+  async loadFromSupabase() {
+    if (typeof SupabaseService !== 'undefined' && typeof SupabaseService.fetchWifiConfig === 'function') {
+      try {
+        const remoteWifi = await SupabaseService.fetchWifiConfig();
+        if (remoteWifi && (remoteWifi.ssid || remoteWifi.password)) {
+          if (window.menuData && window.menuData.restaurant) {
+            window.menuData.restaurant.wifi = remoteWifi;
+          }
+          this.saveLocal(remoteWifi);
+          this.applyToDOM(remoteWifi);
+          return remoteWifi;
+        }
+      } catch (e) {
+        console.error('[WifiManager] Erro ao sincronizar wifi do Supabase:', e);
+      }
+    }
+    return null;
+  },
+
+  async syncFromSupabase() {
+    return await this.loadFromSupabase();
+  },
+
   getWifiConfig() {
     try {
       const stored = localStorage.getItem(this.LOCAL_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (parsed && typeof parsed.ssid === 'string' && typeof parsed.password === 'string') {
+        if (parsed && typeof parsed === 'object') {
           return {
-            ssid: parsed.ssid.trim() || this.defaultConfig.ssid,
-            password: parsed.password.trim() || this.defaultConfig.password
+            ssid: parsed.ssid || '',
+            password: parsed.password || ''
           };
         }
       }
@@ -1097,8 +1125,8 @@ const WifiManager = {
       console.warn('Erro ao carregar wifi_config local:', e);
     }
     return {
-      ssid: window.menuData?.restaurant?.wifi?.ssid || this.defaultConfig.ssid,
-      password: window.menuData?.restaurant?.wifi?.password || this.defaultConfig.password
+      ssid: window.menuData?.restaurant?.wifi?.ssid || '',
+      password: window.menuData?.restaurant?.wifi?.password || ''
     };
   },
 
@@ -1106,33 +1134,25 @@ const WifiManager = {
     if (!config) return;
 
     // Atualiza menuData em memória
-    if (window.menuData?.restaurant?.wifi) {
-      window.menuData.restaurant.wifi.ssid = config.ssid;
-      window.menuData.restaurant.wifi.password = config.password;
-    }
-
-    // Atualiza os elementos de texto no modal
-    const ssidEls = document.querySelectorAll('.wifi-ssid-value, #wifiModalSsidVal');
-    const pwdEls = document.querySelectorAll('.wifi-password-value, #wifiModalPasswordVal');
-    ssidEls.forEach(el => { el.textContent = config.ssid; });
-    pwdEls.forEach(el => { el.textContent = config.password; });
-  },
-
-  async syncFromSupabase() {
-    if (typeof SupabaseService !== 'undefined' && typeof SupabaseService.fetchWifiConfig === 'function') {
-      try {
-        const remote = await SupabaseService.fetchWifiConfig();
-        if (remote && remote.ssid && remote.password) {
-          const current = this.getWifiConfig();
-          if (remote.ssid !== current.ssid || remote.password !== current.password) {
-            this.saveLocal(remote);
-            this.applyToDOM(remote);
-          }
-        }
-      } catch (e) {
-        console.warn('Erro ao sincronizar wifi do Supabase:', e);
+    if (window.menuData && window.menuData.restaurant) {
+      if (!window.menuData.restaurant.wifi) {
+        window.menuData.restaurant.wifi = {};
       }
+      window.menuData.restaurant.wifi.ssid = config.ssid || '';
+      window.menuData.restaurant.wifi.password = config.password || '';
     }
+
+    // Atualiza os textos do modal e da página (#wifiSsidText, #wifiPasswordText)
+    const ssidEls = document.querySelectorAll('.wifi-ssid-value, #wifiModalSsidVal, #wifiSsidText');
+    const pwdEls = document.querySelectorAll('.wifi-password-value, #wifiModalPasswordVal, #wifiPasswordText');
+    ssidEls.forEach(el => { el.textContent = config.ssid || ''; });
+    pwdEls.forEach(el => { el.textContent = config.password || ''; });
+
+    // Atualiza inputs de edição se existirem e não estiverem com foco
+    const ssidInput = document.getElementById('wifiEditSsidInput');
+    const pwdInput = document.getElementById('wifiEditPasswordInput');
+    if (ssidInput && document.activeElement !== ssidInput) ssidInput.value = config.ssid || '';
+    if (pwdInput && document.activeElement !== pwdInput) pwdInput.value = config.password || '';
   },
 
   saveLocal(config) {
@@ -1146,23 +1166,28 @@ const WifiManager = {
 
   async saveWifiConfig(config) {
     const cleanConfig = {
-      ssid: config.ssid.trim() || this.defaultConfig.ssid,
-      password: config.password.trim() || this.defaultConfig.password
+      ssid: (config.ssid || '').trim(),
+      password: (config.password || '').trim()
     };
 
     // Salva local e reflete no DOM imediatamente
     this.saveLocal(cleanConfig);
 
-    // Persiste no Supabase se disponível
+    // Persiste no Supabase
     if (typeof SupabaseService !== 'undefined' && typeof SupabaseService.saveWifiConfig === 'function') {
       try {
-        await SupabaseService.saveWifiConfig(cleanConfig);
+        const saved = await SupabaseService.saveWifiConfig(cleanConfig);
+        if (saved && (saved.ssid || saved.password)) {
+          this.saveLocal(saved);
+          return saved;
+        }
       } catch (e) {
-        console.warn('Erro ao salvar wifi no Supabase:', e);
+        console.error('[WifiManager] Erro ao salvar wifi no Supabase:', e);
+        throw e;
       }
     }
 
-    return true;
+    return cleanConfig;
   }
 };
 
@@ -1240,7 +1265,7 @@ function initWifiModal() {
   if (btnCopyWifi) {
     btnCopyWifi.addEventListener('click', () => {
       const config = WifiManager.getWifiConfig();
-      const password = config.password || 'sobradoburger';
+      const password = config.password || '';
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(password).then(() => {
@@ -1311,20 +1336,40 @@ function initWifiModal() {
       btnSaveEdit.disabled = true;
       btnSaveEdit.textContent = 'Salvando...';
 
-      await WifiManager.saveWifiConfig({
-        ssid: newSsid,
-        password: newPassword
-      });
+      try {
+        const newWifi = { ssid: newSsid, password: newPassword };
+        await SupabaseService.saveWifiConfig(newWifi);
 
-      btnSaveEdit.disabled = false;
-      btnSaveEdit.textContent = 'Salvar Wi-Fi';
+        if (window.menuData && window.menuData.restaurant) {
+          window.menuData.restaurant.wifi = newWifi;
+        }
 
-      // Volta para a visualização limpa com os novos valores
-      if (editForm) editForm.style.display = 'none';
-      if (displayView) displayView.style.display = 'flex';
-      if (mainActions) mainActions.style.display = 'block';
+        if (typeof WifiManager !== 'undefined') {
+          WifiManager.saveLocal(newWifi);
+          WifiManager.applyToDOM(newWifi);
+        }
 
-      showToast('✓ Informações do Wi-Fi atualizadas com sucesso!');
+        // Volta para a visualização limpa com os novos valores
+        if (editForm) editForm.style.display = 'none';
+        if (displayView) displayView.style.display = 'flex';
+        if (mainActions) mainActions.style.display = 'block';
+
+        if (typeof Utils !== 'undefined' && Utils.showToast) {
+          Utils.showToast('✓ Wi-Fi salvo no banco com sucesso!');
+        } else if (window.showToast) {
+          window.showToast('✓ Wi-Fi salvo no banco com sucesso!');
+        }
+      } catch (err) {
+        console.error('[WifiManager] Erro ao salvar no Supabase:', err);
+        if (typeof Utils !== 'undefined' && Utils.showToast) {
+          Utils.showToast('Erro ao salvar Wi-Fi no banco.');
+        } else if (window.showToast) {
+          window.showToast('Erro ao salvar Wi-Fi no banco.');
+        }
+      } finally {
+        btnSaveEdit.disabled = false;
+        btnSaveEdit.textContent = 'Salvar Wi-Fi';
+      }
     });
   }
 }
@@ -1601,7 +1646,7 @@ function sendOrderToWhatsApp() {
     return;
   }
 
-  const restaurantPhone = window.menuData?.restaurant?.whatsapp || '553599170077';
+  const restaurantPhone = window.menuData?.restaurant?.whatsapp || '5535999929454';
   const table = getActiveTable();
   const notes = document.getElementById('cartNotesInput')?.value.trim();
 
@@ -1680,6 +1725,7 @@ const AdminManager = {
   SESSION_STORAGE_KEY: 'sobrado_admin_auth',
   LOCAL_STORAGE_PRODUCTS_KEY: 'sobrado_custom_products',
   productIdToDelete: null,
+  selectedProductImageFile: null,
 
   init() {
     this.loadStoredProducts();
@@ -2006,6 +2052,24 @@ const AdminManager = {
     const idInput = document.getElementById('adminProdId');
     if (idInput) idInput.value = '';
 
+    const fileInput = document.getElementById('adminProdFileInput');
+    if (fileInput) fileInput.value = '';
+
+    const urlInput = document.getElementById('adminProdImageUrl');
+    if (urlInput) urlInput.value = '';
+
+    this.selectedProductImageFile = null;
+
+    const previewContainer = document.getElementById('adminImagePreviewContainer');
+    const previewImg = document.getElementById('adminImagePreview');
+    const previewName = document.getElementById('adminImagePreviewName');
+    const btnText = document.getElementById('btnAdminChooseFileText');
+
+    if (previewImg) previewImg.src = '';
+    if (previewName) previewName.textContent = '';
+    if (previewContainer) previewContainer.style.display = 'none';
+    if (btnText) btnText.textContent = 'Escolher foto do dispositivo';
+
     const titleEl = document.getElementById('adminProductModalTitle');
     const subtitleEl = document.getElementById('adminProductModalSubtitle');
     if (titleEl) titleEl.textContent = 'Novo Produto';
@@ -2050,7 +2114,8 @@ const AdminManager = {
     const priceInput = document.getElementById('adminProdPrice');
     const descInput = document.getElementById('adminProdDesc');
     const ingInput = document.getElementById('adminProdIngredients');
-    const imgInput = document.getElementById('adminProdImage');
+    const urlInput = document.getElementById('adminProdImageUrl');
+    const fileInput = document.getElementById('adminProdFileInput');
     const hasAddonsCheckbox = document.getElementById('adminProdHasAddons');
     const featuredCheckbox = document.getElementById('adminProdFeatured');
     const availableCheckbox = document.getElementById('adminProdAvailable');
@@ -2065,7 +2130,31 @@ const AdminManager = {
         ? product.ingredients.join(', ')
         : (product.ingredients || '');
     }
-    if (imgInput) imgInput.value = product.imageUrl || '';
+
+    if (fileInput) fileInput.value = '';
+    this.selectedProductImageFile = null;
+
+    if (urlInput) urlInput.value = product.imageUrl || '';
+
+    const previewContainer = document.getElementById('adminImagePreviewContainer');
+    const previewImg = document.getElementById('adminImagePreview');
+    const previewName = document.getElementById('adminImagePreviewName');
+    const btnText = document.getElementById('btnAdminChooseFileText');
+
+    if (product.imageUrl) {
+      if (previewImg) previewImg.src = product.imageUrl;
+      if (previewName) {
+        const parts = product.imageUrl.split('/');
+        previewName.textContent = parts[parts.length - 1] || 'Foto do produto';
+      }
+      if (previewContainer) previewContainer.style.display = 'block';
+      if (btnText) btnText.textContent = 'Trocar foto do dispositivo';
+    } else {
+      if (previewImg) previewImg.src = '';
+      if (previewName) previewName.textContent = '';
+      if (previewContainer) previewContainer.style.display = 'none';
+      if (btnText) btnText.textContent = 'Escolher foto do dispositivo';
+    }
 
     const hasAddons = (Array.isArray(product.addonsConfig) && product.addonsConfig.length > 0)
       || (Array.isArray(product.allowedAddons) && product.allowedAddons.length > 0);
@@ -2098,6 +2187,20 @@ const AdminManager = {
   },
 
   closeProductFormModal() {
+    this.selectedProductImageFile = null;
+    const form = document.getElementById('adminProductForm');
+    if (form) form.reset();
+    const fileInput = document.getElementById('adminProdFileInput');
+    if (fileInput) fileInput.value = '';
+    const urlInput = document.getElementById('adminProdImageUrl');
+    if (urlInput) urlInput.value = '';
+    const previewContainer = document.getElementById('adminImagePreviewContainer');
+    const previewImg = document.getElementById('adminImagePreview');
+    const btnText = document.getElementById('btnAdminChooseFileText');
+    if (previewImg) previewImg.src = '';
+    if (previewContainer) previewContainer.style.display = 'none';
+    if (btnText) btnText.textContent = 'Escolher foto do dispositivo';
+
     const modal = document.getElementById('adminProductFormModal');
     if (!modal) return;
     modal.classList.remove('active');
@@ -2111,10 +2214,12 @@ const AdminManager = {
     const priceInput = document.getElementById('adminProdPrice');
     const descInput = document.getElementById('adminProdDesc');
     const ingInput = document.getElementById('adminProdIngredients');
-    const imgInput = document.getElementById('adminProdImage');
+    const urlInput = document.getElementById('adminProdImageUrl');
     const hasAddonsCheckbox = document.getElementById('adminProdHasAddons');
     const featuredCheckbox = document.getElementById('adminProdFeatured');
     const availableCheckbox = document.getElementById('adminProdAvailable');
+    const saveBtn = document.getElementById('btnAdminSaveProduct');
+    const originalBtnText = saveBtn ? saveBtn.innerHTML : 'Salvar Produto';
 
     const name = nameInput?.value.trim();
     const categoryId = catSelect?.value;
@@ -2139,17 +2244,51 @@ const AdminManager = {
       return;
     }
 
+    const existingId = idInput?.value.trim();
+    const prodId = existingId || `${categoryId}-${Date.now().toString(36)}`;
+    let imageUrl = urlInput?.value.trim() || null;
+
+    if (saveBtn) {
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Salvando...';
+    }
+
+    // Se um novo arquivo foi selecionado no input:
+    if (this.selectedProductImageFile) {
+      if (saveBtn) {
+        saveBtn.textContent = 'Enviando imagem...';
+      }
+
+      try {
+        if (typeof SupabaseService !== 'undefined' && typeof SupabaseService.uploadProductImage === 'function') {
+          const uploadedUrl = await SupabaseService.uploadProductImage(this.selectedProductImageFile, prodId);
+          imageUrl = uploadedUrl;
+          if (urlInput) urlInput.value = uploadedUrl;
+        } else {
+          throw new Error('Serviço Supabase não está disponível para upload.');
+        }
+      } catch (uploadErr) {
+        console.error('[Admin] Erro no upload da foto:', uploadErr);
+        if (window.showToast) {
+          window.showToast('Erro ao enviar foto: ' + (uploadErr.message || 'Falha no upload'));
+        }
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = originalBtnText;
+        }
+        return;
+      }
+    }
+
     const description = descInput?.value.trim() || '';
     const ingredientsRaw = ingInput?.value.trim() || '';
     const ingredients = ingredientsRaw
       ? ingredientsRaw.split(',').map(s => s.trim()).filter(Boolean)
       : [];
-    const imageUrl = imgInput?.value.trim() || null;
     const featured = !!featuredCheckbox?.checked;
     const available = !!availableCheckbox?.checked;
     const hasAddons = !!hasAddonsCheckbox?.checked;
 
-    const existingId = idInput?.value.trim();
     let addonsConfig = [];
     let allowedAddons = [];
     const customAddonPrices = {};
@@ -2196,7 +2335,7 @@ const AdminManager = {
     }
 
     const productData = {
-      id: existingId || null,
+      id: existingId || prodId,
       name,
       categoryId,
       price,
@@ -2212,7 +2351,19 @@ const AdminManager = {
       customAddonPrices
     };
 
-    await this.saveProduct(productData);
+    try {
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Salvando...';
+      }
+      await this.saveProduct(productData);
+      this.selectedProductImageFile = null;
+    } finally {
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalBtnText;
+      }
+    }
   },
 
   async saveProduct(productData) {
@@ -2228,7 +2379,7 @@ const AdminManager = {
       finalProduct.id = `${productData.categoryId}-${Date.now().toString(36)}`;
     }
 
-    // 1. Sincroniza com Supabase se disponível
+    // 1. Sincroniza diretamente com Supabase (POST / PATCH)
     if (typeof SupabaseService !== 'undefined') {
       try {
         if (isEditing) {
@@ -2239,7 +2390,7 @@ const AdminManager = {
           if (created) finalProduct = { ...finalProduct, ...created };
         }
       } catch (err) {
-        console.error('[Supabase] Erro ao sincronizar produto no banco:', err);
+        console.error('[Supabase] Erro ao salvar produto no banco:', err);
         if (window.showToast) window.showToast('⚠️ Salvo localmente (offline do banco)');
       }
     }
@@ -2261,7 +2412,7 @@ const AdminManager = {
     this.closeProductFormModal();
 
     if (window.showToast) {
-      window.showToast(isEditing ? '✓ Produto atualizado com sucesso!' : '✓ Novo produto cadastrado no cardápio!');
+      window.showToast('✓ Produto salvo no banco com sucesso!');
     }
     return true;
   },
@@ -2344,33 +2495,6 @@ const AdminManager = {
     }
   },
 
-  /**
-   * Sincronização em massa do catálogo base para o Supabase
-   * Executa diretamente sem pop-up de confirmação
-   */
-  async syncBaseToSupabase() {
-    const btnAdminSync = document.getElementById('btnAdminSyncSupabase');
-    if (!btnAdminSync || btnAdminSync.disabled) return;
-
-    try {
-      const originalText = btnAdminSync.innerHTML;
-      btnAdminSync.disabled = true;
-      btnAdminSync.textContent = 'Sincronizando...';
-
-      if (window.SupabaseService) {
-        await window.SupabaseService.seedProducts(window.menuData.products);
-      }
-      Utils.showToast('✓ Base sincronizada com sucesso!');
-      btnAdminSync.innerHTML = originalText;
-    } catch (err) {
-      console.error(err);
-      Utils.showToast('Erro ao sincronizar.');
-      btnAdminSync.innerHTML = originalText;
-    } finally {
-      btnAdminSync.disabled = false;
-    }
-  },
-
   setupListeners() {
     // Botão de acesso ao ADM no header
     const btnOpenAuth = document.getElementById('btnOpenAdminAuth');
@@ -2410,29 +2534,6 @@ const AdminManager = {
     }
 
     // Botões da Barra Superior
-    const btnAdminSync = document.getElementById('btnAdminSyncSupabase');
-    if (btnAdminSync) {
-      btnAdminSync.addEventListener('click', async () => {
-        try {
-          const originalText = btnAdminSync.innerHTML;
-          btnAdminSync.disabled = true;
-          btnAdminSync.textContent = 'Sincronizando...';
-
-          if (window.SupabaseService) {
-            await window.SupabaseService.seedProducts(window.menuData.products);
-          }
-          Utils.showToast('✓ Base sincronizada com sucesso!');
-          btnAdminSync.innerHTML = originalText;
-        } catch (err) {
-          console.error(err);
-          Utils.showToast('Erro ao sincronizar.');
-          btnAdminSync.innerHTML = originalText;
-        } finally {
-          btnAdminSync.disabled = false;
-        }
-      });
-    }
-
     const btnNewProduct = document.getElementById('btnAdminNewProduct');
     if (btnNewProduct) {
       btnNewProduct.addEventListener('click', () => this.openNewModal());
@@ -2452,6 +2553,66 @@ const AdminManager = {
     const btnCancelProduct = document.getElementById('btnAdminCancelProduct');
     if (btnCancelProduct) {
       btnCancelProduct.addEventListener('click', () => this.closeProductFormModal());
+    }
+
+    // Upload de Imagem do Produto (Galeria / Dispositivo)
+    const btnChooseFile = document.getElementById('btnAdminChooseFile');
+    const fileInput = document.getElementById('adminProdFileInput');
+    if (btnChooseFile && fileInput) {
+      btnChooseFile.addEventListener('click', () => {
+        fileInput.click();
+      });
+    }
+
+    if (fileInput) {
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+          if (window.showToast) {
+            window.showToast('Por favor, selecione um arquivo de imagem válido.');
+          }
+          fileInput.value = '';
+          return;
+        }
+
+        this.selectedProductImageFile = file;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const previewContainer = document.getElementById('adminImagePreviewContainer');
+          const previewImg = document.getElementById('adminImagePreview');
+          const previewName = document.getElementById('adminImagePreviewName');
+          const btnText = document.getElementById('btnAdminChooseFileText');
+
+          if (previewImg) previewImg.src = event.target.result;
+          if (previewName) previewName.textContent = file.name;
+          if (previewContainer) previewContainer.style.display = 'block';
+          if (btnText) btnText.textContent = 'Trocar foto do dispositivo';
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    const btnRemoveImage = document.getElementById('btnAdminRemoveImage');
+    if (btnRemoveImage) {
+      btnRemoveImage.addEventListener('click', () => {
+        this.selectedProductImageFile = null;
+        if (fileInput) fileInput.value = '';
+        const urlInput = document.getElementById('adminProdImageUrl');
+        if (urlInput) urlInput.value = '';
+
+        const previewContainer = document.getElementById('adminImagePreviewContainer');
+        const previewImg = document.getElementById('adminImagePreview');
+        const previewName = document.getElementById('adminImagePreviewName');
+        const btnText = document.getElementById('btnAdminChooseFileText');
+
+        if (previewImg) previewImg.src = '';
+        if (previewName) previewName.textContent = '';
+        if (previewContainer) previewContainer.style.display = 'none';
+        if (btnText) btnText.textContent = 'Escolher foto do dispositivo';
+      });
     }
 
     // Alternar visibilidade e estado do switch de Adicionais

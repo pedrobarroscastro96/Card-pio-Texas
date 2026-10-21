@@ -1,51 +1,51 @@
 /* =====================================================================
-   O SOBRADO — CARDÁPIO DIGITAL & HUB NFC
+   TEXAS — CARDÁPIO DIGITAL & HUB NFC
    Design System Light Theme: Leve, Limpo, Sofisticado e Minimalista
    ===================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-  /* 1. Paleta de Superfícies (Light Gastronômico & Aconchegante) */
-  --bg-main: #FAF9F5;             /* Creme/off-white suave, acolhedor e leve */
-  --bg-main-alt: #F4F1EA;         /* Variação sutil para seções de destaque */
-  --bg-card: #FFFFFF;             /* Branco puro para cartões e links */
-  --bg-card-hover: #FCFBFA;       /* Micro-hover suave */
-  --bg-input: #FFFFFF;            /* Fundo dos campos de entrada */
-  --bg-chip: #F2EFEB;             /* Chips inativos e badges secundários */
-  --bg-chip-hover: #E9E5DE;       /* Hover de chips */
-  --bg-glass: rgba(250, 249, 245, 0.92); /* Vidro fosco claro no topo */
+  /* 1. Paleta de Superfícies (Branco Minimalista & Limpo) */
+  --bg-main: #FFFFFF;             /* Fundo 100% branco e arejado */
+  --bg-main-alt: #FAF6F6;         /* Off-white com leve nuance vinho nobre */
+  --bg-card: #FFFFFF;             /* Cartões brancos para destaque limpo dos itens */
+  --bg-card-hover: #FDF9F9;       /* Micro-hover suave */
+  --bg-input: #FAF5F5;            /* Fundo suave para inputs */
+  --bg-chip: #F5EEEE;             /* Chips inativos com toque suave de vinho */
+  --bg-chip-hover: #ECE2E2;       /* Hover dos chips */
+  --bg-glass: rgba(255, 255, 255, 0.94); /* Vidro fosco translúcido no topo */
 
-  /* 2. Cores de Destaque Gastronômico (Terracota & Âmbar Queimado) */
-  --brand-terracotta: #C85A17;     /* Tom terracota/brasa nobre */
-  --brand-terracotta-hover: #B44E11; /* Estado ativo/hover */
-  --brand-terracotta-light: #FDF3EC; /* Fundo suave para ícones e tags */
-  --brand-terracotta-border: #F6D2BD;/* Borda delicada de destaque */
-  --brand-amber: #D97706;          /* Âmbar complementar */
+  /* 2. Cores da Marca — Hamburgueria Texas (Vinho Rústico Protagonista) */
+  --brand-terracotta: #4A121A;        /* Tom vinho/bordô encorpado como cor principal de ação */
+  --brand-terracotta-hover: #380C13;  /* Vinho mais escuro e imponente para hover/clique */
+  --brand-terracotta-light: #F7EBEB;  /* Fundo sutil avermelhado para ícones e tags */
+  --brand-terracotta-border: #E8CFD2; /* Borda delicada com tom de vinho suave */
+  --brand-amber: #E89D35;             /* Mostarda/ouro texano para selos e estrelas */
 
-  /* 3. Selo de Mesa e Status (Verde Musgo / Sálvia Acolhedor) */
-  --status-table-bg: #EAF6EE;      /* Fundo da cápsula da mesa */
-  --status-table-border: #C6E7D2;  /* Borda sutil da cápsula */
-  --status-table-text: #237841;    /* Verde elegante e legível */
-  --status-table-dot: #2E9B54;     /* Ponto pulsante */
+  /* 3. Selo de Mesa e Status (Verde Sálvia) */
+  --status-table-bg: #EAF6EE;
+  --status-table-border: #C6E7D2;
+  --status-table-text: #237841;
+  --status-table-dot: #2E9B54;
 
   /* 4. Tipografia & Hierarquia de Contraste */
-  --text-primary: #1F1E1C;         /* Preto suave / grafite escuro */
-  --text-heading: #2D2B28;         /* Títulos e destaques estruturais */
-  --text-secondary: #6E6B65;       /* Descrições e ingredientes */
-  --text-dim: #9E9B94;             /* Elementos discretos e placeholders */
-  --text-white: #FFFFFF;           /* Texto sobre botões terracota */
+  --text-primary: #241114;          /* Marrom/vinho bem escuro de alto contraste */
+  --text-heading: #4A121A;          /* Vinho forte nos títulos, seções e categorias */
+  --text-secondary: #6E5356;        /* Ingredientes e descrições técnicas */
+  --text-dim: #997E81;              /* Placeholders e textos discretos */
+  --text-white: #FFFFFF;            /* Texto branco sobre botões vinho */
 
-  /* 5. Bordas e Sombras Suaves (Sem peso preto) */
-  --border-subtle: #EAE7E1;        /* Linha sutil padrão */
-  --border-divider: #F0ECE4;       /* Divisores internos */
-  --border-focus: #C85A17;         /* Foco de acessibilidade */
+  /* 5. Bordas e Sombras Suaves */
+  --border-subtle: #EFE6E6;         /* Linha sutil padrão */
+  --border-divider: #F6EEEE;        /* Divisores internos */
+  --border-focus: #4A121A;          /* Anel de foco no tom vinho da marca */
 
-  --shadow-sm: 0 2px 8px rgba(31, 30, 28, 0.03);
-  --shadow-card: 0 4px 20px rgba(31, 30, 28, 0.04);
-  --shadow-card-hover: 0 8px 26px rgba(31, 30, 28, 0.07);
-  --shadow-drawer: 0 -10px 40px rgba(31, 30, 28, 0.12);
-  --shadow-modal: 0 16px 40px rgba(31, 30, 28, 0.14);
+  --shadow-sm: 0 2px 8px rgba(74, 18, 26, 0.04);
+  --shadow-card: 0 4px 20px rgba(74, 18, 26, 0.05);
+  --shadow-card-hover: 0 8px 26px rgba(74, 18, 26, 0.08);
+  --shadow-drawer: 0 -10px 40px rgba(74, 18, 26, 0.12);
+  --shadow-modal: 0 16px 40px rgba(74, 18, 26, 0.14);
 
   /* 6. Medidas e Geometria */
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -2183,19 +2183,19 @@ body.admin-mode-active .header-admin-btn,
 
 /* Ajustes de layout sticky quando em Modo ADM */
 body.admin-mode-active {
-  --admin-bar-height: 86px;
+  --admin-bar-height: 52px;
 }
 
 body.admin-mode-active .menu-header {
-  top: var(--admin-bar-height, 86px);
+  top: var(--admin-bar-height, 52px);
 }
 
 body.admin-mode-active .categories-bar-wrapper {
-  top: calc(var(--header-height) + var(--admin-bar-height, 86px));
+  top: calc(var(--header-height) + var(--admin-bar-height, 52px));
 }
 
 body.admin-mode-active .menu-section {
-  scroll-margin-top: calc(var(--header-height) + var(--category-bar-height) + var(--admin-bar-height, 86px) + 16px);
+  scroll-margin-top: calc(var(--header-height) + var(--category-bar-height) + var(--admin-bar-height, 52px) + 16px);
 }
 
 /* Barra Superior Fixa do ADM */
@@ -2228,19 +2228,11 @@ body.admin-mode-active .menu-section {
 
 .admin-top-bar-inner {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Linha 1: Status "⚡ Painel ADM" à esquerda + "Sair do ADM" à direita */
-.admin-top-bar-header-row {
-  display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   width: 100%;
-  gap: 8px;
+  box-sizing: border-box;
 }
 
 .admin-top-bar-badge {
@@ -2275,14 +2267,12 @@ body.admin-mode-active .menu-section {
   }
 }
 
-/* Linha 2: "Sincronizar Base" + "+ Novo Produto" */
+/* Ações da Barra do ADM */
 #adminTopBar .admin-bar-actions,
 .admin-top-bar-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: flex-end;
-  width: 100%;
+  align-items: center;
+  gap: 8px;
   box-sizing: border-box;
 }
 
@@ -2294,44 +2284,14 @@ body.admin-mode-active .menu-section {
   justify-content: center;
   gap: 6px;
   font-size: 0.78rem;
-  padding: 6px 10px;
-  min-height: 32px;
+  padding: 6px 12px;
+  min-height: 34px;
   border-radius: var(--radius-full);
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
   box-sizing: border-box;
-}
-
-#adminTopBar .admin-bar-actions .btn-admin-bar,
-#adminTopBar .admin-bar-actions .btn-admin-action {
-  flex: 1 1 0;
-  min-width: 0;
-  text-align: center;
-}
-
-.btn-admin-bar-sync {
-  background-color: var(--brand-terracotta-light);
-  color: var(--brand-terracotta);
-  border: 1px solid var(--brand-terracotta-border);
-}
-
-.btn-admin-bar-sync:hover {
-  background-color: #F8E3D4;
-  border-color: var(--brand-terracotta);
-  transform: translateY(-1px);
-}
-
-.btn-admin-bar-sync:active {
-  transform: scale(0.96);
-}
-
-.btn-admin-bar-sync.loading,
-.btn-admin-bar-sync:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  pointer-events: none;
 }
 
 .btn-admin-bar-new {
@@ -2355,7 +2315,7 @@ body.admin-mode-active .menu-section {
   background-color: var(--bg-main-alt);
   color: var(--text-secondary);
   border: 1px solid var(--border-subtle);
-  padding: 5px 10px;
+  padding: 6px 10px;
   font-size: 0.76rem;
 }
 
@@ -2754,6 +2714,113 @@ body.admin-mode-active .menu-section {
 
 .admin-price-input {
   padding-left: 38px;
+}
+
+/* Upload e Pré-visualização de Foto do Produto */
+.admin-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-admin-choose-file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 18px;
+  background-color: var(--bg-main-alt);
+  border: 1.5px dashed var(--brand-terracotta-border);
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--brand-terracotta);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.btn-admin-choose-file:hover {
+  background-color: var(--brand-terracotta-light);
+  border-color: var(--brand-terracotta);
+  border-style: solid;
+  transform: translateY(-1px);
+}
+
+.btn-admin-choose-file:active {
+  transform: scale(0.99);
+}
+
+.btn-choose-file-icon {
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.admin-image-preview-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  box-shadow: 0 2px 8px rgba(74, 18, 26, 0.04);
+  animation: adminPreviewFadeIn 0.2s ease;
+  box-sizing: border-box;
+}
+
+@keyframes adminPreviewFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#adminImagePreview,
+.admin-image-preview-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-main-alt);
+  flex-shrink: 0;
+}
+
+#btnAdminRemoveImage,
+.btn-admin-remove-image {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: #FEE2E2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+#btnAdminRemoveImage:hover,
+.btn-admin-remove-image:hover {
+  background-color: #FCA5A5;
+  color: #991B1B;
+}
+
+#btnAdminRemoveImage:active,
+.btn-admin-remove-image:active {
+  transform: scale(0.96);
 }
 
 .admin-checkboxes-box {

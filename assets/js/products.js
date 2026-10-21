@@ -1,5 +1,5 @@
 /**
- * O Sobrado - Hamburgueria Artesanal & Chopp
+ * Hamburgueria Texas
  * Estrutura de dados desacoplada do cardápio digital
  */
 
@@ -24,685 +24,510 @@ if (typeof window !== 'undefined') {
 
 const menuData = {
   restaurant: {
-    name: "Sobrado - Burger & Bar",
-    handle: "@osobradoo",
-    category: "Burger & Bar",
-    address: "Rua Antônio Augusto da Silveira 159B (Andar superior) Vila Nova - Perdões-MG",
-    phone: "(35) 99170-077",
-    whatsapp: "5535997170077",
-    instagramUrl: "https://www.instagram.com/osobradoo",
+    name: "Hamburgueria Texas",
+    handle: "@hamburgueriatexas_",
+    city: "Lavras / Nepomuceno - MG",
+    address: "Av. Silvio Menicucci, 64, Vila Ester, Lavras - MG",
     wifi: {
-      ssid: "O Sobrado - Clientes",
-      password: "sobradoburger"
+      ssid: "",
+      password: ""
     }
   },
   categories: [
-    { id: "mais-pedidos", name: "Mais Pedidos", order: 1 },
-    { id: "hamburgueres", name: "Hambúrgueres (Carne Angus)", order: 2 },
-    { id: "porcoes-mais-pedidas", name: "Porções Mais Pedidas", order: 3 },
-    { id: "porcoes", name: "Porções & Jantinhas", order: 4 },
-    { id: "porcoes-individuais", name: "Porções Individuais", order: 5 },
-    { id: "macarrao-na-chapa", name: "Macarrão na Chapa", order: 6 },
-    { id: "batata-frita", name: "Batata Frita", order: 7 },
-    { id: "molhos-extras", name: "Molhos Extras", order: 8 },
-    { id: "bebidas", name: "Bebidas", order: 9 },
-    { id: "cervejas", name: "Cervejas", order: 10 },
-    { id: "balas", name: "Balas", order: 11 }
+    { id: "combos", name: "Combos", icon: "zap" },
+    { id: "lanches-premium", name: "Linha Premium", icon: "award" },
+    { id: "lanches-classicos", name: "Linha Clássicos", icon: "disc" },
+    { id: "lanches-empanados", name: "Linha Empanados", icon: "feather" },
+    { id: "lanches-recheados", name: "Hambúrgueres Recheados", icon: "layers" },
+    { id: "lanches-texanos", name: "Linha Texanos (Duplos)", icon: "shield" },
+    { id: "lanches-especiais", name: "Linha Especiais", icon: "star" },
+    { id: "lanches-tradicionais", name: "Linha Tradicionais", icon: "check" },
+    { id: "lanches-kids", name: "Linha Kids", icon: "smile" },
+    { id: "pizzas-tradicionais", name: "Pizzas Tradicionais", icon: "pie-chart" },
+    { id: "pizzas-especiais", name: "Pizzas Especiais", icon: "target" },
+    { id: "pizzas-doces", name: "Pizzas Doces", icon: "heart" },
+    { id: "complementos", name: "Complementos", icon: "box" },
+    { id: "bebidas", name: "Bebidas", icon: "coffee" }
   ],
   products: [
-    // 00. HAMBURGUERES MAIS PEDIDOS
+    /* ================= COMBOS ================= */
     {
-      id: "mais-pedidos-01",
-      categoryId: "mais-pedidos",
-      name: "01. PLT (O MAIS VENDIDO DA CASA)",
-      description: "Pão brioche selado, Maionese original do Sobrado (verde), hambúrguer Angus artesanal de 110g, bacon, 100g de queijo mussarela empanado e frito. Acompanha 1 pote da Maionese Original do Sobrado.",
-      ingredients: ["Pão brioche selado", "Maionese original do Sobrado (verde)", "Hambúrguer Angus artesanal de 110g", "Bacon", "100g de queijo mussarela empanado e frito", "Acompanha 1 pote de Maionese Original"],
-      price: 33.50,
-      imageUrl: "assets/images/products/plt.png",
-      videoUrl: null,
-      featured: true,
-      available: true,
-      allowedAddons: ["aneis-cebola", "bacon", "catupiry", "cheddar", "hamburguer-110g", "mussarela", "ovo", "queijo-empanado"]
+      id: "combo-01",
+      categoryId: "combos",
+      name: "Combo 1: Texas Holliday",
+      price: 40.50,
+      description: "Hambúrguer bovino, queijo prato, tomate, alface, molho especial e bacon + Batata Frita + Refri 200ml.",
+      ingredients: ["Hambúrguer bovino", "Queijo prato", "Tomate", "Alface", "Molho especial", "Bacon", "Batata frita", "Refri 200ml"],
+      featured: true
     },
     {
-      id: "mais-pedidos-02",
-      categoryId: "mais-pedidos",
-      name: "02. DOIIS",
-      description: "Pão de brioche selado, BacoNese (maionese de alho e bacon frito, feita na casa), carne hambúrguer artesanal ANGUS de 110g, salada (alface e tomate rodelas), bacon, fatia de mussarela derretida e ovo frito. Acompanha 1 pote BacoNese.",
-      ingredients: ["Pão de brioche selado", "BacoNese da casa", "Carne hambúrguer artesanal ANGUS 110g", "Salada (alface e tomate em rodelas)", "Bacon", "Fatia de mussarela derretida", "Ovo frito", "Acompanha 1 pote BacoNese"],
-      price: 32.00,
-      imageUrl: "assets/images/products/doiis.png",
-      videoUrl: null,
-      featured: true,
-      available: true,
-      allowedAddons: ["aneis-cebola", "bacon", "catupiry", "cheddar", "hamburguer-110g", "mussarela", "queijo-empanado"]
-    },
-    {
-      id: "mais-pedidos-original",
-      categoryId: "mais-pedidos",
-      name: "ORIGINAL.",
-      description: "Pão de brioche selado, carne de hambúrguer artesanal ANGUS 110g, bacon, Maionese Original do Sobrado, salada (alface e tomate rodelas), ovo frito, fatia de mussarela derretida. Acompanha 1 pote da Maionese Original do Sobrado.",
-      ingredients: ["Pão de brioche selado", "Carne artesanal ANGUS 110g", "Bacon", "Maionese Original do Sobrado", "Salada (alface e tomate)", "Ovo frito", "Mussarela derretida", "Acompanha 1 pote Maionese Original"],
-      price: 33.50,
-      imageUrl: "assets/images/products/original.jpg",
-      videoUrl: null,
-      featured: true,
-      available: true,
-      allowedAddons: ["aneis-cebola", "bacon", "catupiry", "cheddar", "hamburguer-110g", "mussarela", "salada", "queijo-empanado"]
-    },
-
-    // 02. HAMBURGUERES (CARNE ANGUS)
-    {
-      id: "angus-00",
-      categoryId: "hamburgueres",
-      name: "00. CHEESE BURGER (ANGUS)",
-      description: "Pão de brioche selado, Maionese Original do Sobrado, carne de hambúrguer ANGUS artesanal de 110g, fatia mussarela derretida. Acompanha 1 pote da Maionese Original do Sobrado.",
-      ingredients: ["Pão de brioche selado", "Maionese Original do Sobrado", "Carne artesanal ANGUS 110g", "Fatia mussarela derretida", "Acompanha 1 pote Maionese Original"],
-      price: 23.50,
-      imageUrl: "assets/images/products/cheese-burger.png",
-      videoUrl: null,
-      featured: false,
-      available: true,
-      allowedAddons: ["hamburguer-110g", "ovo", "cheddar"]
-    },
-    {
-      id: "angus-03",
-      categoryId: "hamburgueres",
-      name: "03. PLT PRIME",
-      description: "TODOS OS INGREDIENTES DO PLT COM ADICIONAL DE HAMBURGUER ANGUS 110G.",
-      ingredients: ["Ingredientes do PLT", "Adicional de 1 Hambúrguer Angus 110g"],
+      id: "combo-02",
+      categoryId: "combos",
+      name: "Combo 2: Especial Frango",
       price: 40.00,
-      imageUrl: "assets/images/products/plt-prime.png",
-      videoUrl: null,
-      featured: false,
-      available: true,
-      allowedAddons: ["aneis-cebola", "bacon", "catupiry", "cheddar", "hamburguer-110g", "mussarela", "ovo", "queijo-empanado"]
+      description: "Hambúrguer de frango 140g, ovo, queijo, presunto, milho, tomate, alface, batata palha, molho especial + 1 opcional + Batata frita ou anéis + Refri 200ml.",
+      ingredients: ["Hambúrguer de frango 140g", "Ovo", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial"]
     },
     {
-      id: "angus-04",
-      categoryId: "hamburgueres",
-      name: "04. QUATTRO",
-      description: "Pão de brioche selado, Maionese Original do Sobrado, 2 carnes de hambúrguer artesanal ANGUS 110g, 2 porções de bacon, 110g de queijo mussarela empanado e frito. Acompanha 1 pote molho da casa.",
-      ingredients: ["Pão de brioche selado", "Maionese Original do Sobrado", "2 carnes artesanais ANGUS 110g", "2 porções de bacon", "110g mussarela empanada e frita", "Acompanha 1 pote molho da casa"],
-      price: 45.00,
-      imageUrl: "assets/images/products/quattro.png",
-      videoUrl: null,
-      featured: true,
-      available: true,
-      allowedAddons: ["aneis-cebola", "bacon", "catupiry", "cheddar", "hamburguer-110g", "mussarela", "ovo", "queijo-empanado"]
+      id: "combo-03",
+      categoryId: "combos",
+      name: "Combo 3: Texas Dallas",
+      price: 40.50,
+      description: "Frango empanado 200g, 2 queijos prato, catupiry, tomate, alface, cebola roxa, ketchup e molho especial + Batata frita + Refri 200ml.",
+      ingredients: ["Frango empanado 200g", "2 queijos prato", "Catupiry", "Tomate", "Alface", "Cebola roxa", "Ketchup", "Molho especial", "Batata frita", "Guaraná 200ml"]
     },
     {
-      id: "angus-bacon-burguer",
-      categoryId: "hamburgueres",
-      name: "BACON BURGUER",
-      description: "Pão de brioche selado, Maionese Original do Sobrado, carne de hambúrguer artesanal ANGUS 110g, bacon, fatia de mussarela derretida. Acompanha 1 pote da Maionese Original do Sobrado.",
-      ingredients: ["Pão de brioche selado", "Maionese Original do Sobrado", "Carne artesanal ANGUS 110g", "Bacon", "Mussarela derretida", "Acompanha 1 pote Maionese Original"],
-      price: 32.90,
-      imageUrl: "assets/images/products/bacon-burguer.png",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "combo-04",
+      categoryId: "combos",
+      name: "Combo 4: Texas Katy",
+      price: 42.00,
+      description: "Frango empanado 200g, 2 queijos prato, bacon, tomate, alface, cebola roxa, ketchup e molho especial + Batata frita + Refri 200ml.",
+      ingredients: ["Frango empanado 200g", "2 queijos prato", "Bacon", "Tomate", "Alface", "Cebola roxa", "Ketchup", "Molho especial", "Batata frita", "Guaraná 200ml"]
     },
     {
-      id: "angus-cheddar-melt-prime",
-      categoryId: "hamburgueres",
-      name: "CHEDDAR MELT PRIME",
-      description: "TODOS OS INGREDIENTES DO CHEDDAR MELT COM ADICIONAL DE 1 HAMBÚRGUER ANGUS 110g.",
-      ingredients: ["Ingredientes do Cheddar Melt", "Adicional de 1 Hambúrguer Angus 110g"],
-      price: 37.50,
-      imageUrl: "assets/images/products/cheddar-melt-prime.png",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "combo-05",
+      categoryId: "combos",
+      name: "Combo 5: Texas Billy",
+      price: 42.00,
+      description: "Hambúrguer bovino, queijo prato, cheddar, tomate, alface e molho especial + Batata frita + Refri 200ml.",
+      ingredients: ["Hambúrguer bovino", "Queijo prato", "Cheddar", "Tomate", "Alface", "Molho especial", "Batata frita", "Guaraná 200ml"]
     },
     {
-      id: "angus-cheddar-melt",
-      categoryId: "hamburgueres",
-      name: "CHEDDAR MELT.",
-      description: "Pão de brioche selado, carne de hambúrguer artesanal ANGUS 110g, Maionese Original do Sobrado, bacon, fatia de mussarela derretida, cheddar cremoso. Acompanha 1 pote da Maionese Original do Sobrado.",
-      ingredients: ["Pão de brioche selado", "Carne artesanal ANGUS 110g", "Maionese Original do Sobrado", "Bacon", "Mussarela derretida", "Cheddar cremoso", "Acompanha 1 pote Maionese Original"],
-      price: 30.00,
-      imageUrl: "assets/images/products/cheddar-melt.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true,
-      allowedAddons: ["aneis-cebola", "hamburguer-110g", "salada", "ovo", "queijo-empanado"]
-    },
-    {
-      id: "angus-doiis-prime",
-      categoryId: "hamburgueres",
-      name: "DOIIS PRIME",
-      description: "TODOS OS INGREDIENTES DO DOIIS COM ADICIONAL DE HAMBURGUER ANGUS 110G.",
-      ingredients: ["Ingredientes do DOIIS", "Adicional de 1 Hambúrguer Angus 110g"],
+      id: "combo-06",
+      categoryId: "combos",
+      name: "Combo 6: Texas Charlie",
       price: 39.50,
-      imageUrl: "assets/images/products/doiis-prime.png",
-      videoUrl: null,
-      featured: false,
-      available: true
+      description: "Hambúrguer bovino, queijo prato, catupiry, tomate, alface e molho especial + Batata frita + Refri 200ml.",
+      ingredients: ["Hambúrguer bovino", "Queijo prato", "Catupiry", "Tomate", "Alface", "Molho especial", "Batata frita", "Guaraná 200ml"]
     },
     {
-      id: "angus-mdf",
-      categoryId: "hamburgueres",
-      name: "M.D.F (MORTO DE FOME)",
-      description: "Pão de brioche selado, duas carnes de hambúrguer artesanal ANGUS 110g, Maionese Original do Sobrado, 2 ovos frito, 2 fatias de mussarela derretida. Acompanha 1 pote da Maionese Original do Sobrado e bacon.",
-      ingredients: ["Pão de brioche selado", "2 carnes artesanais ANGUS 110g", "Maionese Original do Sobrado", "2 ovos fritos", "2 fatias mussarela derretida", "Bacon", "Acompanha 1 pote Maionese Original"],
-      price: 49.00,
-      imageUrl: "assets/images/products/mdf.png",
-      videoUrl: null,
-      featured: true,
-      available: true
-    },
-    {
-      id: "angus-nsg",
-      categoryId: "hamburgueres",
-      name: "NSG",
-      description: "Pão de brioche selado, Maionese Original do Sobrado, carne de hambúrguer ANGUS artesanal 110g, salada (alface e tomate em rodelas), bacon, fatia de mussarela derretida. Acompanha 1 pote da maionese original do Sobrado.",
-      ingredients: ["Pão de brioche selado", "Maionese Original do Sobrado", "Carne artesanal ANGUS 110g", "Salada (alface e tomate)", "Bacon", "Mussarela derretida", "Acompanha 1 pote Maionese Original"],
-      price: 29.00,
-      imageUrl: "assets/images/products/nsg.png",
-      videoUrl: null,
-      featured: false,
-      available: true,
-      allowedAddons: ["queijo-empanado"]
-    },
-    {
-      id: "angus-original-prime",
-      categoryId: "hamburgueres",
-      name: "ORIGINAL PRIME",
-      description: "TODOS OS INGREDIENTES DO ORIGINAL COM ADICIONAL DE HAMBURGUER ANGUS 110G.",
-      ingredients: ["Ingredientes do Original", "Adicional de 1 Hambúrguer Angus 110g"],
-      price: 41.00,
-      imageUrl: "assets/images/products/original-prime.png",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "angus-salada-burguer",
-      categoryId: "hamburgueres",
-      name: "SALADA BURGUER",
-      description: "Pão de brioche selado, Maionese Original do Sobrado, carne de hambúrguer artesanal ANGUS 110g, salada (alface e tomate rodelas), fatia de mussarela derretida. Acompanha 1 pote da Maionese Original do Sobrado.",
-      ingredients: ["Pão de brioche selado", "Maionese Original do Sobrado", "Carne artesanal ANGUS 110g", "Salada (alface e tomate)", "Mussarela derretida", "Acompanha 1 pote Maionese Original"],
-      price: 27.00,
-      imageUrl: "assets/images/products/salada-burguer.png",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "angus-sthai",
-      categoryId: "hamburgueres",
-      name: "STHAI",
-      description: "Pão de brioche selado, anéis de cebola, BacoNese( maionese de alho e bacon frito, feita na casa), carne hambúrguer artesanal ANGUS de 110g, salada (alface e tomate rodelas), bacon, fatia de mussarela derretida. Acompanha 1 pote BacoNese.",
-      ingredients: ["Pão de brioche selado", "Anéis de cebola", "BacoNese da casa", "Carne artesanal ANGUS 110g", "Salada (alface e tomate)", "Bacon", "Mussarela derretida", "Acompanha 1 pote BacoNese"],
-      price: 34.00,
-      imageUrl: "assets/images/products/sthai.png",
-      videoUrl: null,
-      featured: false,
-      available: true,
-      allowedAddons: ["aneis-cebola", "bacon", "catupiry", "cheddar", "hamburguer-110g", "queijo-empanado"]
-    },
-    {
-      id: "angus-x-cupim",
-      categoryId: "hamburgueres",
-      name: "X CUPIM",
-      description: "Pão de brioche selado, BacoNese, (maionese de alho e bacon frito feita na casa), carne hambúrguer artesanal ANGUS de 110g, cupim desfiado com creme secreto da casa e bacon. Acompanha 1 pote BacoNese.",
-      ingredients: ["Pão de brioche selado", "BacoNese da casa", "Carne artesanal ANGUS 110g", "Cupim desfiado com creme secreto da casa", "Bacon", "Acompanha 1 pote BacoNese"],
-      price: 41.50,
-      imageUrl: "assets/images/products/x-cupim.png",
-      videoUrl: null,
-      featured: true,
-      available: true,
-      allowedAddons: ["aneis-cebola", "bacon", "catupiry", "cheddar", "hamburguer-110g", "ovo", "queijo-empanado"]
-    },
-    {
-      id: "angus-x-cupim-prime",
-      categoryId: "hamburgueres",
-      name: "X CUPIM PRIME",
-      description: "TODOS OS INGREDIENTES DQ X CUPIM COM ADICIONAL DE 1 HAMBURGUER ANGUS 110g.",
-      ingredients: ["Ingredientes do X Cupim", "Adicional de 1 Hambúrguer Angus 110g"],
-      price: 49.00,
-      imageUrl: "assets/images/products/x-cupim-prime.png",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "combo-07",
+      categoryId: "combos",
+      name: "Combo 7: Especial Fraldinha Bacon Catupiry",
+      price: 39.50,
+      description: "Hambúrguer de fraldinha 140g, ovo, queijo, presunto, milho, tomate, alface, batata palha e molho especial + Batata frita + Refri 200ml.",
+      ingredients: ["Hambúrguer fraldinha 140g", "Ovo", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial", "Batata frita", "Guaraná 200ml"]
     },
 
-    // 03. PORÇÕES MAIS PEDIDAS
+    /* ================= LINHA PREMIUM ================= */
     {
-      id: "porcao-classica-g",
-      categoryId: "porcoes-mais-pedidas",
-      name: "CLÁSSICA DO SOBRADO (A MAIS VENDIDA) (G)",
-      description: "Uma porção de carne cozida lentamente para garantir um resultado extremamente saboroso e suculento, acompanhada de mandioca cozida no próprio caldo da carne, finalizada na chapa com cebola e segredinhos da casa. Acompanha um pote grande de BacoNese.",
-      ingredients: ["Carne cozida lentamente", "Mandioca cozida no caldo da carne", "Finalizada na chapa com cebola", "Pote grande de BacoNese"],
-      price: 110.00,
-      imageUrl: "assets/images/products/classica-sobrado-g.jpg",
-      videoUrl: null,
-      featured: true,
-      available: true
+      id: "prem-jessie",
+      categoryId: "lanches-premium",
+      name: "Texas Jessie",
+      price: 28.40,
+      description: "Hambúrguer bovino, queijo prato, alface, tomate, molho especial e cream cheese.",
+      ingredients: ["Pão", "Hambúrguer bovino", "Queijo prato", "Alface", "Tomate", "Molho especial", "Cream cheese"]
     },
     {
-      id: "porcao-classica-m",
-      categoryId: "porcoes-mais-pedidas",
-      name: "CLÁSSICA DO SOBRADO (A MAIS VENDIDA) (M)",
-      description: "Uma porção de carne cozida lentamente para garantir um resultado extremamente saboroso e suculento, acompanhada de mandioca cozida no próprio caldo da carne, finalizada na chapa com cebola e segredinhos da casa. Acompanha um pote grande de BacoNese.",
-      ingredients: ["Carne cozida lentamente", "Mandioca cozida no caldo da carne", "Finalizada na chapa com cebola", "Pote grande de BacoNese"],
-      price: 85.00,
-      imageUrl: "assets/images/products/classica-sobrado-m.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "prem-billy",
+      categoryId: "lanches-premium",
+      name: "Texas Billy",
+      price: 28.40,
+      description: "Hambúrguer bovino, queijo prato, tomate, alface, molho especial e cheddar.",
+      ingredients: ["Pão", "Hambúrguer bovino", "Queijo prato", "Tomate", "Alface", "Molho especial", "Cheddar"]
     },
     {
-      id: "porcao-contra-surreal-g",
-      categoryId: "porcoes-mais-pedidas",
-      name: "O CONTRA SURREAL (G)",
-      description: "Uma porção de contra filé macio, bem temperado e suculento, É finalizado na chapa com cebola e tomate, creme secreto da casa, Acompanha batata frita.",
-      ingredients: ["Contra filé macio e suculento", "Finalizado na chapa com cebola e tomate", "Creme secreto da casa", "Acompanha batata frita"],
-      price: 95.00,
-      imageUrl: "assets/images/products/contra-surreal-g.png",
-      videoUrl: null,
-      featured: true,
-      available: true
+      id: "prem-big-roy",
+      categoryId: "lanches-premium",
+      name: "Texas Big Roy",
+      price: 33.40,
+      description: "2 Hambúrgueres bovinos, 2 queijos prato, tomate, alface, molho especial, cream cheese e bacon.",
+      ingredients: ["Pão", "2 Hambúrgueres bovinos", "2 Queijos prato", "Tomate", "Alface", "Molho especial", "Cream cheese", "Bacon"],
+      featured: true
     },
     {
-      id: "porcao-contra-surreal-m",
-      categoryId: "porcoes-mais-pedidas",
-      name: "O CONTRA SURREAL (M)",
-      description: "Uma porção de contra filé macio, bem temperado e suculento, É finalizado na chapa com cebola e tomate, creme secreto da casa, Acompanha batata frita.",
-      ingredients: ["Contra filé macio e suculento", "Finalizado na chapa com cebola e tomate", "Creme secreto da casa", "Acompanha batata frita"],
-      price: 80.00,
-      imageUrl: "assets/images/products/contra-surreal-m.png",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "prem-burguer",
+      categoryId: "lanches-premium",
+      name: "Texas Burguer",
+      price: 19.90,
+      description: "Pão, carne 140g, molho especial Texas e queijo prato.",
+      ingredients: ["Pão", "Carne 140g", "Molho especial Texas", "Queijo prato"]
+    },
+    {
+      id: "prem-holliday",
+      categoryId: "lanches-premium",
+      name: "Texas Holliday",
+      price: 28.40,
+      description: "Hambúrguer bovino, queijo prato, tomate, alface, molho especial e bacon.",
+      ingredients: ["Pão", "Hambúrguer bovino", "Queijo prato", "Tomate", "Alface", "Molho especial", "Bacon"]
+    },
+    {
+      id: "prem-charlie",
+      categoryId: "lanches-premium",
+      name: "Texas Charlie",
+      price: 28.40,
+      description: "Hambúrguer bovino, queijo prato, tomate, alface, molho especial e catupiry.",
+      ingredients: ["Pão", "Hambúrguer bovino", "Queijo prato", "Tomate", "Alface", "Molho especial", "Catupiry"]
     },
 
-    // 04. PORÇÃO & JANTINHAS
+    /* ================= LINHA CLÁSSICOS ================= */
     {
-      id: "porcao-batata-bacon-cheddar",
-      categoryId: "porcoes",
-      name: "Batata Bacon e Cheddar",
-      description: "Batata frita crocante coberta com queijo cheddar cremoso e pedaços crocantes de bacon.",
-      ingredients: ["Batata frita", "Cheddar cremoso", "Bacon crocante"],
-      price: 25.00,
-      imageUrl: "assets/images/products/batata-bacon-cheddar.png",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "class-cactus",
+      categoryId: "lanches-classicos",
+      name: "Texas Cactus",
+      price: 31.50,
+      description: "Pão, hambúrguer bovino 200g, catupiry, alface, tomate, ketchup, cebola roxa, 2 queijos prato e molho especial.",
+      ingredients: ["Pão", "Hambúrguer 200g", "Catupiry", "Alface", "Tomate", "Ketchup", "Cebola roxa", "2 Queijos prato", "Molho especial"]
     },
     {
-      id: "porcao-frango-insano",
-      categoryId: "porcoes",
-      name: "Frango Insano",
-      description: "Porção de 500g de peito de frango em cubos, marinados no tempero da casa, garantindo crocância por fora e um interior macio e suculento. Acompanha molho feito de ketchup, pimenta e alho, criando um contraste de sabores simplesmente insano.",
-      ingredients: ["500g de peito de frango em cubos marinado", "Crocante por fora e macio por dentro", "Molho especial de ketchup, pimenta e alho"],
+      id: "class-denton",
+      categoryId: "lanches-classicos",
+      name: "Texas Denton",
+      price: 31.50,
+      description: "Pão, hambúrguer bovino 200g, cream cheese, alface, tomate, ketchup, cebola roxa, 2 queijos prato e molho especial.",
+      ingredients: ["Pão", "Hambúrguer 200g", "Cream cheese", "Alface", "Tomate", "Ketchup", "Cebola roxa", "2 Queijos prato", "Molho especial"]
+    },
+    {
+      id: "class-cooper",
+      categoryId: "lanches-classicos",
+      name: "Texas Cooper",
+      price: 31.50,
+      description: "Pão, hambúrguer bovino 200g, cheddar cremoso, alface, tomate, ketchup, cebola roxa, 2 queijos prato e molho especial.",
+      ingredients: ["Pão", "Hambúrguer 200g", "Cheddar cremoso", "Alface", "Tomate", "Ketchup", "Cebola roxa", "2 Queijos prato", "Molho especial"]
+    },
+    {
+      id: "class-austin",
+      categoryId: "lanches-classicos",
+      name: "Texas Austin",
+      price: 31.50,
+      description: "Pão, hambúrguer bovino 200g, bacon, alface, tomate, ketchup, cebola roxa, 2 queijos prato e molho especial.",
+      ingredients: ["Pão", "Hambúrguer 200g", "Bacon", "Alface", "Tomate", "Ketchup", "Cebola roxa", "2 Queijos prato", "Molho especial"]
+    },
+
+    /* ================= LINHA EMPANADOS ================= */
+    {
+      id: "emp-dallas",
+      categoryId: "lanches-empanados",
+      name: "Texas Dallas",
+      price: 31.50,
+      description: "Pão, frango empanado 200g, catupiry, alface, tomate, ketchup, cebola roxa, 2 queijos prato e molho especial.",
+      ingredients: ["Pão", "Frango empanado 200g", "Catupiry", "Alface", "Tomate", "Ketchup", "Cebola roxa", "2 Queijos prato", "Molho especial"]
+    },
+    {
+      id: "emp-houston",
+      categoryId: "lanches-empanados",
+      name: "Texas Houston",
+      price: 31.50,
+      description: "Pão, frango empanado 200g, cream cheese, alface, tomate, ketchup, cebola roxa, 2 queijos prato e molho especial.",
+      ingredients: ["Pão", "Frango empanado 200g", "Cream cheese", "Alface", "Tomate", "Ketchup", "Cebola roxa", "2 Queijos prato", "Molho especial"]
+    },
+    {
+      id: "emp-amarillo",
+      categoryId: "lanches-empanados",
+      name: "Texas Amarillo",
+      price: 31.50,
+      description: "Pão, frango empanado 200g, cheddar cremoso, alface, tomate, ketchup, cebola roxa, 2 queijos prato e molho especial.",
+      ingredients: ["Pão", "Frango empanado 200g", "Cheddar cremoso", "Alface", "Tomate", "Ketchup", "Cebola roxa", "2 Queijos prato", "Molho especial"]
+    },
+    {
+      id: "emp-katy",
+      categoryId: "lanches-empanados",
+      name: "Texas Katy",
+      price: 31.50,
+      description: "Pão, hambúrguer empanado 200g, bacon, alface, tomate, ketchup, cebola roxa, 2 queijos prato e molho especial.",
+      ingredients: ["Pão", "Hambúrguer empanado 200g", "Bacon", "Alface", "Tomate", "Ketchup", "Cebola roxa", "2 Queijos prato", "Molho especial"]
+    },
+
+    /* ================= RECHEADOS ================= */
+    {
+      id: "rech-frango",
+      categoryId: "lanches-recheados",
+      name: "Recheado de Frango",
+      price: 32.50,
+      description: "Hambúrguer de frango recheado (140g), queijo, cebola, bacon, alface + 1 opcional (ou 1/2 e 1/2).",
+      ingredients: ["Hambúrguer frango 140g", "Queijo", "Cebola", "Bacon", "Alface", "1 Opcional à escolha"]
+    },
+    {
+      id: "rech-pernil",
+      categoryId: "lanches-recheados",
+      name: "Recheado de Pernil",
+      price: 33.50,
+      description: "Hambúrguer de pernil recheado (140g), queijo, cebola, bacon, alface + 1 opcional (ou 1/2 e 1/2).",
+      ingredients: ["Hambúrguer pernil 140g", "Queijo", "Cebola", "Bacon", "Alface", "1 Opcional à escolha"]
+    },
+    {
+      id: "rech-fraldinha",
+      categoryId: "lanches-recheados",
+      name: "Recheado de Fraldinha",
+      price: 34.50,
+      description: "Hambúrguer de fraldinha recheado (140g), queijo, cebola, bacon, alface + 1 opcional (ou 1/2 e 1/2).",
+      ingredients: ["Hambúrguer fraldinha 140g", "Queijo", "Cebola", "Bacon", "Alface", "1 Opcional à escolha"]
+    },
+    {
+      id: "rech-picanha",
+      categoryId: "lanches-recheados",
+      name: "Recheado de Picanha",
+      price: 35.50,
+      description: "Hambúrguer de picanha recheado (140g), queijo, cebola, bacon, alface + 1 opcional (ou 1/2 e 1/2).",
+      ingredients: ["Hambúrguer picanha 140g", "Queijo", "Cebola", "Bacon", "Alface", "1 Opcional à escolha"]
+    },
+
+    /* ================= TEXANOS (Duplos) ================= */
+    {
+      id: "tex-frango",
+      categoryId: "lanches-texanos",
+      name: "Texano Duplo Frango",
+      price: 44.00,
+      description: "2 Hambúrgueres frango (140g cada), 2 ovos, 2 queijos, 2 presuntos, milho, tomate, 2 alfaces americanas, batata palha, 2 molhos especiais e 2 opcionais.",
+      ingredients: ["2 Hambúrgueres frango 140g", "2 Ovos", "2 Queijos", "2 Presuntos", "Milho", "Tomate", "Alface", "Batata palha", "2 Opcionais"]
+    },
+    {
+      id: "tex-pernil",
+      categoryId: "lanches-texanos",
+      name: "Texano Duplo Pernil",
+      price: 44.00,
+      description: "2 Hambúrgueres pernil (140g cada), 2 ovos, 2 queijos, 2 presuntos, milho, tomate, 2 alfaces americanas, batata palha, 2 molhos especiais e 2 opcionais.",
+      ingredients: ["2 Hambúrgueres pernil 140g", "2 Ovos", "2 Queijos", "2 Presuntos", "Milho", "Tomate", "Alface", "Batata palha", "2 Opcionais"]
+    },
+    {
+      id: "tex-fraldinha",
+      categoryId: "lanches-texanos",
+      name: "Texano Duplo Fraldinha",
       price: 45.00,
-      imageUrl: "assets/images/products/frango-insano.png",
-      videoUrl: null,
-      featured: true,
-      available: true
+      description: "2 Hambúrgueres fraldinha (140g cada), 2 ovos, 2 queijos, 2 presuntos, milho, tomate, 2 alfaces americanas, batata palha, 2 molhos especiais e 2 opcionais.",
+      ingredients: ["2 Hambúrgueres fraldinha 140g", "2 Ovos", "2 Queijos", "2 Presuntos", "Milho", "Tomate", "Alface", "Batata palha", "2 Opcionais"]
     },
     {
-      id: "jantinha-contra-file",
-      categoryId: "porcoes",
-      name: "Jantinha ( com contra filé)",
-      description: "Arroz, feijão, batata frita vinagrete, farofa, contra filé na chapa.",
-      ingredients: ["Arroz", "Feijão", "Batata frita", "Vinagrete", "Farofa", "Contra filé na chapa"],
-      price: 25.00,
-      imageUrl: "assets/images/products/jantinha-contra-file.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "tex-picanha",
+      categoryId: "lanches-texanos",
+      name: "Texano Duplo Picanha",
+      price: 46.00,
+      description: "2 Hambúrgueres picanha (140g cada), 2 ovos, 2 queijos, 2 presuntos, milho, tomate, 2 alfaces americanas, batata palha, 2 molhos especiais e 2 opcionais.",
+      ingredients: ["2 Hambúrgueres picanha 140g", "2 Ovos", "2 Queijos", "2 Presuntos", "Milho", "Tomate", "Alface", "Batata palha", "2 Opcionais"]
     },
     {
-      id: "jantinha-lombo",
-      categoryId: "porcoes",
-      name: "Jantinha (com lombo)",
-      description: "Arroz, feijão, batata frita vinagrete, farofa, lombo suíno na chapa.",
-      ingredients: ["Arroz", "Feijão", "Batata frita", "Vinagrete", "Farofa", "Lombo suíno na chapa"],
-      price: 20.00,
-      imageUrl: "assets/images/products/jantinha-lombo.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "jantinha-peixe",
-      categoryId: "porcoes",
-      name: "Jantinha (com peixe)",
-      description: "Arroz, feijão, batata frita vinagrete, farofa, iscas de tilápia.",
-      ingredients: ["Arroz", "Feijão", "Batata frita", "Vinagrete", "Farofa", "Iscas de tilápia"],
-      price: 25.00,
-      imageUrl: "assets/images/products/jantinha-peixe.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "porcao-mandioca-frita",
-      categoryId: "porcoes",
-      name: "Mandioca frita",
-      description: "Mandioca frita sequinha e crocante.",
-      ingredients: ["Mandioca frita crocante"],
-      price: 15.00,
-      imageUrl: "assets/images/products/mandioca-frita.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "porcao-tilapia-g",
-      categoryId: "porcoes",
-      name: "TILÁPIA À MODA SOBRADO (G)",
-      description: "500g Tilapia, 400g batata.",
-      ingredients: ["500g Tilápia em iscas", "400g Batata frita", "Acompanha molho tártaro e limão"],
-      price: 95.00,
-      imageUrl: "assets/images/products/tilapia-g.png",
-      videoUrl: null,
-      featured: true,
-      available: true
-    },
-    {
-      id: "porcao-tilapia-m",
-      categoryId: "porcoes",
-      name: "TILÁPIA À MODA SOBRADO (M)",
-      description: "300g Tilapia, 300g batata.",
-      ingredients: ["300g Tilápia em iscas", "300g Batata frita", "Acompanha molho tártaro e limão"],
-      price: 80.00,
-      imageUrl: "assets/images/products/tilapia-m.png",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "tex-empanado",
+      categoryId: "lanches-texanos",
+      name: "Texano Duplo Empanado",
+      price: 46.00,
+      description: "2 Hambúrgueres empanados (140g cada), 2 ovos, 2 queijos, 2 presuntos, milho, tomate, 2 alfaces americanas, batata palha, 2 molhos especiais e 2 opcionais.",
+      ingredients: ["2 Hambúrgueres empanados", "2 Ovos", "2 Queijos", "2 Presuntos", "Milho", "Tomate", "Alface", "Batata palha", "2 Opcionais"]
     },
 
-    // 05. MACARRÃO NA CHAPA
+    /* ================= ESPECIAIS ================= */
     {
-      id: "macarrao-chapa",
-      categoryId: "macarrao-na-chapa",
-      name: "Macarrão na chapa",
-      description: "Macarrão, molho especial, bacon, frango, calabresa, mussarela e orégano. (Nosso macarrão agora tem um sabor único. Devido ao processo de preparo, no qual as carnes são embaladas juntas, não é possível retirar nenhuma carne listadas.",
-      ingredients: ["Macarrão", "Molho especial", "Bacon", "Frango", "Calabresa", "Mussarela", "Orégano"],
-      price: 25.00,
-      imageUrl: "assets/images/products/macarrao-chapa.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "esp-frango",
+      categoryId: "lanches-especiais",
+      name: "Especial de Frango",
+      price: 29.00,
+      description: "Hambúrguer (140g), ovo, queijo, presunto, milho, tomate, alface americana, batata palha, molho especial + 1 opcional.",
+      ingredients: ["Hambúrguer frango 140g", "Ovo", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial", "1 Opcional"]
+    },
+    {
+      id: "esp-pernil",
+      categoryId: "lanches-especiais",
+      name: "Especial de Pernil",
+      price: 29.50,
+      description: "Hambúrguer pernil (140g), ovo, queijo, presunto, milho, tomate, alface americana, batata palha, molho especial + 1 opcional.",
+      ingredients: ["Hambúrguer pernil 140g", "Ovo", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial", "1 Opcional"]
+    },
+    {
+      id: "esp-fraldinha",
+      categoryId: "lanches-especiais",
+      name: "Especial de Fraldinha",
+      price: 31.00,
+      description: "Hambúrguer fraldinha (140g), ovo, queijo, presunto, milho, tomate, alface americana, batata palha, molho especial + 1 opcional.",
+      ingredients: ["Hambúrguer fraldinha 140g", "Ovo", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial", "1 Opcional"]
+    },
+    {
+      id: "esp-picanha",
+      categoryId: "lanches-especiais",
+      name: "Especial de Picanha",
+      price: 31.50,
+      description: "Hambúrguer picanha (140g), ovo, queijo, presunto, milho, tomate, alface americana, batata palha, molho especial + 1 opcional.",
+      ingredients: ["Hambúrguer picanha 140g", "Ovo", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial", "1 Opcional"]
+    },
+    {
+      id: "esp-vegetariano",
+      categoryId: "lanches-especiais",
+      name: "Especial Vegetariano",
+      price: 26.50,
+      description: "Alface, tomate, batata palha, milho, molho especial, queijo mussarela, ovo + 2 opcionais (Provolone, cheddar, catupiry, azeitona, palmito ou cream cheese).",
+      ingredients: ["Alface", "Tomate", "Batata palha", "Milho", "Molho especial", "Mussarela", "Ovo", "2 Opcionais"]
     },
 
-    // 06. BATATA FRITA
+    /* ================= TRADICIONAIS ================= */
     {
-      id: "batata-frita-tradicional",
-      categoryId: "batata-frita",
+      id: "trad-pernil",
+      categoryId: "lanches-tradicionais",
+      name: "Tradicional de Pernil",
+      price: 26.50,
+      description: "Hambúrguer pernil (140g), queijo, presunto, milho, tomate, alface, batata palha e molho especial.",
+      ingredients: ["Hambúrguer pernil 140g", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial"]
+    },
+    {
+      id: "trad-frango",
+      categoryId: "lanches-tradicionais",
+      name: "Tradicional de Frango",
+      price: 27.50,
+      description: "Hambúrguer frango (140g), queijo, presunto, milho, tomate, alface, batata palha e molho especial.",
+      ingredients: ["Hambúrguer frango 140g", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial"]
+    },
+    {
+      id: "trad-fraldinha",
+      categoryId: "lanches-tradicionais",
+      name: "Tradicional de Fraldinha",
+      price: 27.50,
+      description: "Hambúrguer fraldinha (140g), queijo, presunto, milho, tomate, alface, batata palha e molho especial.",
+      ingredients: ["Hambúrguer fraldinha 140g", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial"]
+    },
+    {
+      id: "trad-picanha",
+      categoryId: "lanches-tradicionais",
+      name: "Tradicional de Picanha",
+      price: 28.00,
+      description: "Hambúrguer picanha (140g), queijo, presunto, milho, tomate, alface, batata palha e molho especial.",
+      ingredients: ["Hambúrguer picanha 140g", "Queijo", "Presunto", "Milho", "Tomate", "Alface", "Batata palha", "Molho especial"]
+    },
+
+    /* ================= KIDS ================= */
+    {
+      id: "kids-smash",
+      categoryId: "lanches-kids",
+      name: "Smash Kids",
+      price: 22.40,
+      description: "Pão, molho, hambúrguer bovino e cheddar cremoso.",
+      ingredients: ["Pão", "Molho", "Hambúrguer bovino", "Cheddar cremoso"]
+    },
+    {
+      id: "kids-empanado",
+      categoryId: "lanches-kids",
+      name: "Frango Empanado Kids",
+      price: 24.90,
+      description: "Pão, molho especial, ketchup, hambúrguer empanado de frango e mussarela.",
+      ingredients: ["Pão", "Molho especial", "Ketchup", "Frango empanado", "Mussarela"]
+    },
+    {
+      id: "kids-combo-1",
+      categoryId: "lanches-kids",
+      name: "Texas Kids 1 (com Batata e Refri)",
+      price: 35.00,
+      description: "Hambúrguer bovino, 2 fatias de queijo mussarela e ketchup + Batata e Refri.",
+      ingredients: ["Pão", "Hambúrguer bovino", "2 Mussarela", "Ketchup", "Batata frita", "Refrigerante"]
+    },
+    {
+      id: "kids-combo-2",
+      categoryId: "lanches-kids",
+      name: "Texas Kids 2 (com Batata e Refri)",
+      price: 35.00,
+      description: "Pão, molho especial, ketchup, hambúrguer de frango empanado e queijo mussarela + Batata e Refri.",
+      ingredients: ["Pão", "Molho especial", "Ketchup", "Frango empanado", "Mussarela", "Batata frita", "Refrigerante"]
+    },
+
+    /* ================= PIZZAS TRADICIONAIS ================= */
+    {
+      id: "pz-trad-01",
+      categoryId: "pizzas-tradicionais",
+      name: "01 - Texas Napolitana",
+      price: 53.00,
+      description: "Molho de tomate, presunto, mussarela, tomate, azeitona e orégano. (4 pedaços: R$ 53,00 | 8 pedaços: R$ 72,00)",
+      ingredients: ["Molho de tomate", "Presunto", "Mussarela", "Tomate", "Azeitona", "Orégano"]
+    },
+    {
+      id: "pz-trad-04",
+      categoryId: "pizzas-tradicionais",
+      name: "04 - Texas 4 Queijos",
+      price: 53.00,
+      description: "Molho de tomate, mussarela, provolone, cheddar, catupiry, azeitona e orégano.",
+      ingredients: ["Molho de tomate", "Mussarela", "Provolone", "Cheddar", "Catupiry", "Azeitona", "Orégano"],
+      featured: true
+    },
+    {
+      id: "pz-trad-12",
+      categoryId: "pizzas-tradicionais",
+      name: "12 - Texas Calabresa",
+      price: 53.00,
+      description: "Molho de tomate, calabresa fatiada, mussarela, cebola, azeitona e orégano.",
+      ingredients: ["Molho de tomate", "Calabresa fatiada", "Mussarela", "Cebola", "Azeitona", "Orégano"]
+    },
+    {
+      id: "pz-trad-19",
+      categoryId: "pizzas-tradicionais",
+      name: "19 - Texas Portuguesa",
+      price: 53.00,
+      description: "Molho de tomate, presunto, mussarela, ovo, cebola, azeitona e orégano.",
+      ingredients: ["Molho de tomate", "Presunto", "Mussarela", "Ovo", "Cebola", "Azeitona", "Orégano"]
+    },
+
+    /* ================= PIZZAS ESPECIAIS ================= */
+    {
+      id: "pz-esp-21",
+      categoryId: "pizzas-especiais",
+      name: "21 - Texana Frango Catupiry",
+      price: 54.00,
+      description: "Molho de tomate, frango, mussarela, presunto, milho, catupiry e azeitona. (4 pedaços: R$ 54,00 | 8 pedaços: R$ 73,00)",
+      ingredients: ["Molho de tomate", "Frango", "Mussarela", "Presunto", "Milho", "Catupiry", "Azeitona"],
+      featured: true
+    },
+    {
+      id: "pz-esp-26",
+      categoryId: "pizzas-especiais",
+      name: "26 - Texana Catubacon",
+      price: 54.00,
+      description: "Molho de tomate, presunto, mussarela, bacon, catupiry, azeitona e orégano.",
+      ingredients: ["Molho de tomate", "Presunto", "Mussarela", "Bacon", "Catupiry", "Azeitona", "Orégano"]
+    },
+    {
+      id: "pz-esp-43",
+      categoryId: "pizzas-especiais",
+      name: "43 - Texana Especial",
+      price: 54.00,
+      description: "Molho de tomate, presunto, mussarela, lombinho, calabresa, bacon, palmito, milho, cebola e azeitona fatiada.",
+      ingredients: ["Molho de tomate", "Presunto", "Mussarela", "Lombinho", "Calabresa", "Bacon", "Palmito", "Milho", "Cebola", "Azeitona"]
+    },
+
+    /* ================= PIZZAS DOCES ================= */
+    {
+      id: "pz-doce-47",
+      categoryId: "pizzas-doces",
+      name: "47 - Churros",
+      price: 53.00,
+      description: "Leve fatia de mussarela, coberta de doce de leite e canela em pó. (4 pedaços: R$ 53,00 | 8 pedaços: R$ 72,00)",
+      ingredients: ["Mussarela", "Doce de leite", "Canela em pó"]
+    },
+    {
+      id: "pz-doce-49",
+      categoryId: "pizzas-doces",
+      name: "49 - Texana Brigadeiro",
+      price: 53.00,
+      description: "Leve fatia de mussarela, chocolate preto e chocolate granulado.",
+      ingredients: ["Mussarela", "Chocolate preto", "Chocolate granulado"]
+    },
+
+    /* ================= COMPLEMENTOS ================= */
+    {
+      id: "comp-batata",
+      categoryId: "complementos",
       name: "Batata Frita",
-      description: "Porção de batata frita tradicional crocante e sequinha.",
-      ingredients: ["Batata frita tradicional"],
-      price: 12.50,
-      imageUrl: "assets/images/products/batata-frita.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true,
-      allowedAddons: ["bacon", "cheddar"]
-    },
-
-    // PORÇÕES INDIVIDUAIS
-    {
-      id: "aneis-cebola",
-      categoryId: "porcoes-individuais",
-      name: "Anéis de cebola",
-      description: "Porção individual anéis de cebola frito média de 10 anéis de cebola.",
-      ingredients: ["Média de 10 anéis de cebola empanados e fritos"],
-      price: 17.00,
-      imageUrl: "assets/images/products/aneis-cebola.png",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-
-    // MOLHOS EXTRAS
-    {
-      id: "molho-baconnese-g",
-      categoryId: "molhos-extras",
-      name: "BacoNese (G)",
-      description: "Pote grande da maionese artesanal da casa feita com alho e bacon frito.",
-      ingredients: ["Maionese da casa", "Alho", "Bacon frito"],
-      price: 3.50,
-      imageUrl: "assets/images/products/molho.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "molho-baconnese-p",
-      categoryId: "molhos-extras",
-      name: "BacoNese (P)",
-      description: "Pote pequeno da maionese artesanal da casa feita com alho e bacon frito.",
-      ingredients: ["Maionese da casa", "Alho", "Bacon frito"],
-      price: 2.50,
-      imageUrl: "assets/images/products/molho.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "molho-creme-queijo-g",
-      categoryId: "molhos-extras",
-      name: "Creme de Queijo (G)",
-      description: "Pote grande do creme especial de queijo da casa.",
-      ingredients: ["Creme especial de queijo"],
-      price: 5.00,
-      imageUrl: "assets/images/products/molho.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "molho-maionese-verde-g",
-      categoryId: "molhos-extras",
-      name: "Maionese Verde (G)",
-      description: "Pote grande da Maionese Original verde do Sobrado temperada com ervas finas.",
-      ingredients: ["Maionese verde artesanal"],
-      price: 2.50,
-      imageUrl: "assets/images/products/molho.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "molho-maionese-verde-p",
-      categoryId: "molhos-extras",
-      name: "Maionese Verde (P)",
-      description: "Pote pequeno da Maionese Original verde do Sobrado temperada com ervas finas.",
-      ingredients: ["Maionese verde artesanal"],
-      price: 1.50,
-      imageUrl: "assets/images/products/molho.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-
-    // 07. BEBIDAS
-    {
-      id: "bebida-agua-com-gas",
-      categoryId: "bebidas",
-      name: "Água c/ gás",
-      description: "Garrafa de água mineral com gás.",
-      price: 4.00,
-      imageUrl: "assets/images/products/agua-com-gas.png",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-agua-sem-gas",
-      categoryId: "bebidas",
-      name: "Água s/gás",
-      description: "Garrafa de água mineral sem gás.",
-      price: 3.00,
-      imageUrl: "assets/images/products/agua-sem-gas.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-coca-2l",
-      categoryId: "bebidas",
-      name: "Coca 2L",
-      description: "Refrigerante Coca-Cola garrafa 2 litros.",
-      price: 16.00,
-      imageUrl: "assets/images/products/coca-2l.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-coca-600ml",
-      categoryId: "bebidas",
-      name: "Coca 600ml",
-      description: "Refrigerante Coca-Cola garrafa 600ml.",
-      price: 10.00,
-      imageUrl: "assets/images/products/coca-600.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-coca-lata",
-      categoryId: "bebidas",
-      name: "Coca Lata",
-      description: "Refrigerante Coca-Cola lata 350ml.",
-      price: 8.00,
-      imageUrl: "assets/images/products/coca-lata.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-coca-zero-lata",
-      categoryId: "bebidas",
-      name: "Coca lata (Zero)",
-      description: "Refrigerante Coca-Cola Zero lata 350ml.",
-      price: 8.00,
-      imageUrl: "assets/images/products/coca-zero.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-del-valle-goiaba",
-      categoryId: "bebidas",
-      name: "Del valle lata (Goiaba)",
-      description: "Suco Del Valle sabor Goiaba em lata.",
-      price: 8.00,
-      imageUrl: "assets/images/products/del-valle.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-del-valle-pessego",
-      categoryId: "bebidas",
-      name: "Del valle lata (Pêssego)",
-      description: "Suco Del Valle sabor Pêssego em lata.",
-      price: 8.00,
-      imageUrl: "assets/images/products/del-valle.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-del-valle-uva",
-      categoryId: "bebidas",
-      name: "Del valle lata (Uva)",
-      description: "Suco Del Valle sabor Uva em lata.",
-      price: 8.00,
-      imageUrl: "assets/images/products/del-valle.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-guarana-1l",
-      categoryId: "bebidas",
-      name: "Guarana 1L",
-      description: "Refrigerante Guaraná garrafa de 1 litro.",
       price: 12.00,
-      imageUrl: "assets/images/products/guarana-1l.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
+      description: "Porção individual crocante de batata frita.",
+      ingredients: ["Batata frita"]
     },
     {
-      id: "bebida-guarana-lata",
-      categoryId: "bebidas",
-      name: "Guarana Antartica lata",
-      description: "Refrigerante Guaraná Antarctica em lata 350ml.",
-      price: 8.00,
-      imageUrl: "assets/images/products/guarana-lata.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bebida-red-bull",
-      categoryId: "bebidas",
-      name: "Red Bull",
-      description: "Energético Red Bull lata 250ml.",
-      price: 12.00,
-      imageUrl: "assets/images/products/red-bull.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
+      id: "comp-aneis",
+      categoryId: "complementos",
+      name: "Anéis de Cebola",
+      price: 13.00,
+      description: "Porção de anéis de cebola empanados e crocantes.",
+      ingredients: ["Anéis de cebola"]
     },
 
-    // CERVEJAS
-    {
-      id: "cerveja-original",
-      categoryId: "cervejas",
-      name: "Original Cerveja",
-      description: "Cerveja Antarctica Original garrafa 600ml gelada.",
-      price: 14.00,
-      imageUrl: "assets/images/products/cerveja-original.png",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-
-    // BALAS
-    {
-      id: "bala-halls",
-      categoryId: "balas",
-      name: "Halls",
-      description: "Bala refrescante Halls.",
-      price: 3.00,
-      imageUrl: "assets/images/products/halls.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    },
-    {
-      id: "bala-trident",
-      categoryId: "balas",
-      name: "Trident",
-      description: "Goma de mascar Trident.",
-      price: 4.00,
-      imageUrl: "assets/images/products/trident.jpg",
-      videoUrl: null,
-      featured: false,
-      available: true
-    }
+    /* ================= BEBIDAS ================= */
+    { id: "beb-guarana-200", categoryId: "bebidas", name: "Guaraná 200ml", price: 3.50, description: "Garrafinha 200ml gelada.", ingredients: ["Refrigerante"] },
+    { id: "beb-coca-lata", categoryId: "bebidas", name: "Coca-Cola Lata", price: 7.50, description: "Lata 350ml tradicional.", ingredients: ["Refrigerante"] },
+    { id: "beb-coca-zero-lata", categoryId: "bebidas", name: "Coca-Cola Zero Lata", price: 7.50, description: "Lata 350ml sem açúcar.", ingredients: ["Refrigerante"] },
+    { id: "beb-coca-2l", categoryId: "bebidas", name: "Coca-Cola 2L", price: 18.00, description: "Garrafa família 2 litros.", ingredients: ["Refrigerante"] },
+    { id: "beb-guarana-2l", categoryId: "bebidas", name: "Guaraná Antarctica 2L", price: 16.00, description: "Garrafa família 2 litros.", ingredients: ["Refrigerante"] },
+    { id: "beb-heineken", categoryId: "bebidas", name: "Heineken Long Neck", price: 10.00, description: "Cerveja Long Neck 330ml.", ingredients: ["Cerveja"] },
+    { id: "beb-budweiser", categoryId: "bebidas", name: "Budweiser Long Neck", price: 10.00, description: "Cerveja Long Neck 330ml.", ingredients: ["Cerveja"] }
   ]
 };
 
 menuData.addonItems = addonItems;
-
-// Exporta globalmente para uso estático simples e seguro
 if (typeof window !== 'undefined') {
   window.menuData = menuData;
   window.addonItems = addonItems;
 }
-
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { menuData, addonItems };
-}
-
+};

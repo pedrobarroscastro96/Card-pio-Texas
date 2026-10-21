@@ -1,11 +1,11 @@
 /**
- * O Sobrado — Burger & Bar
+ * TEXAS CARDÁPIO - Módulo de Integração com Supabase
  * Módulo de Integração Direta com Supabase (REST API leve via fetch)
  * Sem dependências ou CDNs pesadas para máxima performance mobile
  */
 
-const SUPABASE_URL = 'https://cnauphubkxhizhfahdzq.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuYXVwaHVia3hoaXpoZmFoZHpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5MTEwNTYsImV4cCI6MjEwNzQ4NzA1Nn0.93KmOPdgDoCnDaEqbWMKR3-3nkUgILA7d8kHxx5xta0';
+const SUPABASE_URL = 'https://vcwnhusrfznlerdtulqz.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjd25odXNyZnpubGVyZHR1bHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1Mzc5ODIsImV4cCI6MjEwODExMzk4Mn0.ZwmDCojXw0h8ooJ6flO1N_TUiy4DTQLOMgSqfVasOSg';
 
 const SupabaseService = {
   url: SUPABASE_URL,
@@ -337,6 +337,34 @@ const SupabaseService = {
   },
 
   /**
+   * Upload de foto do produto para o Supabase Storage (bucket: products)
+   * POST /storage/v1/object/products/${filePath}
+   */
+  async uploadProductImage(file, productId) {
+    const fileExt = file.name.split('.').pop();
+    const cleanId = (productId || 'prod_' + Date.now()).replace(/[^a-zA-Z0-9_-]/g, '');
+    const fileName = `${cleanId}_${Date.now()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    const response = await fetch(`${this.url}/storage/v1/object/products/${filePath}`, {
+      method: 'POST',
+      headers: {
+        'apikey': this.key,
+        'Authorization': `Bearer ${this.key}`,
+        'Content-Type': file.type
+      },
+      body: file
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(`Falha no upload da foto: ${err}`);
+    }
+
+    return `${this.url}/storage/v1/object/public/products/${filePath}`;
+  },
+
+  /**
    * Validação de senha de administrador via RPC do Supabase
    * POST /rest/v1/rpc/verify_admin_password
    */
@@ -358,49 +386,62 @@ const SupabaseService = {
    */
   async fetchWifiConfig() {
     try {
-      const response = await fetch(`${this.url}/rest/v1/app_settings?key=eq.wifi_config&select=key,value`, {
+      const res = await fetch(`${this.url}/rest/v1/app_settings?key=eq.wifi_config&select=value`, {
         method: 'GET',
         headers: this.getHeaders()
       });
-
-      if (!response.ok) return null;
-
-      const rows = await response.json();
-      if (Array.isArray(rows) && rows.length > 0 && rows[0].value) {
-        const val = typeof rows[0].value === 'string' ? JSON.parse(rows[0].value) : rows[0].value;
-        return val;
+      if (!res.ok) {
+        console.error('[SupabaseService] Erro ao buscar wifi:', await res.text());
+        return null;
+      }
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0 && data[0].value) {
+        return typeof data[0].value === 'string' ? JSON.parse(data[0].value) : data[0].value;
       }
     } catch (err) {
-      console.warn('[SupabaseService] Erro ao buscar wifi_config:', err);
+      console.error('[SupabaseService] Falha na rede ao buscar wifi:', err);
     }
     return null;
   },
 
   /**
    * Salva configurações de Wi-Fi no Supabase (app_settings)
-   * POST /rest/v1/app_settings com merge-duplicates
+   * Tenta PATCH direto e faz fallback para POST (upsert)
    */
   async saveWifiConfig(config) {
-    try {
-      const payload = {
-        key: 'wifi_config',
-        value: config
-      };
+    const jsonValue = typeof config === 'string' ? JSON.parse(config) : config;
 
-      const response = await fetch(`${this.url}/rest/v1/app_settings`, {
+    // 1. Tenta atualizar com PATCH direto
+    let res = await fetch(`${this.url}/rest/v1/app_settings?key=eq.wifi_config`, {
+      method: 'PATCH',
+      headers: this.getHeaders('return=representation'),
+      body: JSON.stringify({
+        value: jsonValue,
+        updated_at: new Date().toISOString()
+      })
+    });
+
+    // 2. Se a linha ainda não existir (retorno vazio ou 404), faz upsert via POST
+    if (!res.ok || res.status === 404) {
+      res = await fetch(`${this.url}/rest/v1/app_settings`, {
         method: 'POST',
         headers: this.getHeaders('resolution=merge-duplicates,return=representation'),
-        body: JSON.stringify([payload])
+        body: JSON.stringify([{
+          key: 'wifi_config',
+          value: jsonValue,
+          updated_at: new Date().toISOString()
+        }])
       });
-
-      if (response.ok) {
-        const rows = await response.json();
-        return rows && rows[0] ? rows[0].value : config;
-      }
-    } catch (err) {
-      console.warn('[SupabaseService] Erro ao salvar wifi_config no Supabase:', err);
     }
-    return false;
+
+    if (!res.ok) {
+      const errorMsg = await res.text();
+      console.error('[SupabaseService] Erro ao salvar wifi no Supabase:', errorMsg);
+      throw new Error(`Erro ao salvar no banco: ${errorMsg}`);
+    }
+
+    const data = await res.json();
+    return data && data[0] ? data[0].value : jsonValue;
   }
 };
 

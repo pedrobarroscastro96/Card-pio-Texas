@@ -142,7 +142,7 @@ async function loadProductsFromSupabase() {
       window.menuData.products = supabaseProducts;
       try {
         localStorage.setItem('sobrado_custom_products', JSON.stringify(supabaseProducts));
-      } catch (e) {}
+      } catch (e) { }
       renderProducts();
       console.log(`[Supabase] ${supabaseProducts.length} produtos carregados do banco.`);
     } else {
@@ -276,7 +276,7 @@ function getCategoryFallbackSVG(categoryId, isLarge = false) {
         <div class="fallback-svg-wrap">
           ${iconSVG}
         </div>
-        <span class="fallback-brand-tag">Sobrado • Burger & Bar</span>
+        <span class="fallback-brand-tag">Hamburgueria TEXAS</span>
       </div>
     `;
   }
@@ -892,8 +892,8 @@ function parseProductAddons(allowedAddons, product = null) {
   return allowedAddons.map(item => {
     // 1. Já é objeto
     if (typeof item === 'object' && item !== null) {
-      const price = customPrices[item.id] != null 
-        ? Number(customPrices[item.id]) 
+      const price = customPrices[item.id] != null
+        ? Number(customPrices[item.id])
         : (typeof item.price === 'number' ? item.price : parseFloat(item.price || 0));
       return {
         id: item.id,
@@ -909,8 +909,8 @@ function parseProductAddons(allowedAddons, product = null) {
         try {
           const parsed = JSON.parse(trimmed);
           if (parsed && parsed.id) {
-            const price = customPrices[parsed.id] != null 
-              ? Number(customPrices[parsed.id]) 
+            const price = customPrices[parsed.id] != null
+              ? Number(customPrices[parsed.id])
               : (typeof parsed.price === 'number' ? parsed.price : parseFloat(parsed.price || 0));
             return {
               id: parsed.id,
@@ -1005,16 +1005,16 @@ function renderDrawerAddons(product) {
   // Renderiza os adicionais e preços usando os dados de addonsConfig salvos no banco para aquele item
   const items = (Array.isArray(product.addonsConfig) && product.addonsConfig.length > 0)
     ? product.addonsConfig.map(addon => {
-        const base = catalog[addon.id];
-        const displayName = (base && (!addon.name || addon.name === addon.id)) ? base.name : (addon.name || (base ? base.name : addon.id));
-        const rawPrice = typeof addon.price === 'number' ? addon.price : parseFloat(addon.price || 0);
-        const finalPrice = (rawPrice > 0 || !base) ? rawPrice : Number(base.price);
-        return {
-          id: String(addon.id),
-          name: displayName,
-          price: finalPrice
-        };
-      })
+      const base = catalog[addon.id];
+      const displayName = (base && (!addon.name || addon.name === addon.id)) ? base.name : (addon.name || (base ? base.name : addon.id));
+      const rawPrice = typeof addon.price === 'number' ? addon.price : parseFloat(addon.price || 0);
+      const finalPrice = (rawPrice > 0 || !base) ? rawPrice : Number(base.price);
+      return {
+        id: String(addon.id),
+        name: displayName,
+        price: finalPrice
+      };
+    })
     : parseProductAddons(product.allowedAddons, product);
 
   if (items.length === 0) {
@@ -1216,7 +1216,7 @@ function initWifiModal() {
 
   const isUserAdmin = () => {
     return (typeof AdminManager !== 'undefined' && AdminManager.isAdmin && AdminManager.isAdmin()) ||
-           sessionStorage.getItem('sobrado_admin_auth') === 'true';
+      sessionStorage.getItem('sobrado_admin_auth') === 'true';
   };
 
   const resetModalMode = () => {

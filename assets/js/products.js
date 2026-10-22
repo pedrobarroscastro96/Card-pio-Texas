@@ -47,7 +47,8 @@ const menuData = {
     { id: "pizzas-especiais", name: "Pizzas Especiais", icon: "target" },
     { id: "pizzas-doces", name: "Pizzas Doces", icon: "heart" },
     { id: "complementos", name: "Complementos", icon: "box" },
-    { id: "bebidas", name: "Bebidas", icon: "coffee" }
+    { id: "bebidas", name: "Bebidas", icon: "coffee" },
+    { id: "doces", name: "Doces", icon: "gift" }
   ],
   products: [
     /* ================= COMBOS ================= */

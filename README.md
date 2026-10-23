@@ -1,6 +1,6 @@
 # O Sobrado — Cardápio Digital & Hub NFC 🍔🍺
 
-Projeto frontend de alta performance, mobile-first e com identidade visual gastronômica para a hamburgueria artesanal **O Sobrado** (@osobradoo).
+Projeto frontend de alta performance, mobile-first e com identidade visual gastronômica para a hamburgueria artesanal **TEXAS** (@hamburgueriatexas_).
 
 Desenvolvido para ser acessado instantaneamente via placas **NFC e QR Code** nas mesas do salão, sem dependência de frameworks pesados, rotas de API ou banco de dados.
 
@@ -12,7 +12,7 @@ Desenvolvido para ser acessado instantaneamente via placas **NFC e QR Code** nas
    - Identificação automática da mesa via parâmetro de URL (ex: `?mesa=05`).
    - Selo visual de mesa conectada com status ativo pulsante.
    - **Ação Principal**: Acesso direto ao Cardápio Digital com preservação da mesa.
-   - **Instagram Oficial**: Link direto para [@osobradoo](https://www.instagram.com/osobradoo).
+   - **Instagram Oficial**: Link direto para [@@hamburgueriatexas_](https://www.instagram.com/@hamburgueriatexas_).
    - **Wi-Fi da Casa**: Modal interativo com nome da rede e botão de 1-toque "Copiar Senha" com toast de confirmação.
 
 2. **Cardápio Digital Gastronômico (`cardapio.html`)**:

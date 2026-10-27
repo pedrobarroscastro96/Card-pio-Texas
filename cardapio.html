@@ -25,7 +25,7 @@
   <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
 
   <!-- Estilos da Aplicação -->
-  <link rel="stylesheet" href="assets/css/styles.css?v=2.8">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2.9">
 </head>
 
 <body>
@@ -353,6 +353,25 @@
       </div>
     </div>
 
+    <!-- Modal de Gate do Wi-Fi (Desbloqueio via Instagram) -->
+    <div id="wifiGateModal" class="custom-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="wifiGateTitle">
+      <div class="custom-modal-backdrop"></div>
+      <div class="custom-modal-content">
+        <button type="button" class="custom-modal-close" id="btnCloseWifiGate" aria-label="Fechar janela">&times;</button>
+        <div class="gate-icon" aria-hidden="true">📱✨</div>
+        <h3 class="gate-title" id="wifiGateTitle">Wi-Fi Exclusivo</h3>
+        <p class="gate-text">Siga a <strong>Hamburgueria Texas</strong> no Instagram para liberar a senha da nossa rede em um clique!</p>
+        <a href="https://www.instagram.com/hamburgueriatexas_" target="_blank" rel="noopener noreferrer" id="btnFollowAndUnlockWifi" class="btn-gate-action">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+          <span>Seguir no Instagram e Liberar Senha</span>
+        </a>
+      </div>
+    </div>
+
     <!-- Modal de Autenticação ADM -->
     <div class="modal-overlay" id="adminAuthModal" role="dialog" aria-modal="true" aria-labelledby="adminAuthTitle">
       <div class="admin-auth-modal-box">
@@ -621,9 +640,9 @@
   </div>
 
   <!-- Scripts -->
-  <script src="assets/js/products.js?v=2.8"></script>
-  <script src="assets/js/supabase.js?v=2.8"></script>
-  <script src="assets/js/app.js?v=2.8"></script>
+  <script src="assets/js/products.js?v=2.9"></script>
+  <script src="assets/js/supabase.js?v=2.9"></script>
+  <script src="assets/js/app.js?v=2.9"></script>
 </body>
 
 </html>

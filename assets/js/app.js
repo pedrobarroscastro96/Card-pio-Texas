@@ -1202,6 +1202,12 @@ function initWifiModal() {
   const btnCloseWifi = document.getElementById('btnCloseWifi');
   const btnCopyWifi = document.getElementById('btnCopyWifiPassword');
 
+  // Elementos do Modal de Gate do Wi-Fi (Desbloqueio via Instagram)
+  const wifiGateModal = document.getElementById('wifiGateModal');
+  const btnCloseWifiGate = document.getElementById('btnCloseWifiGate');
+  const btnFollowAndUnlock = document.getElementById('btnFollowAndUnlockWifi');
+  const gateBackdrop = wifiGateModal ? wifiGateModal.querySelector('.custom-modal-backdrop') : null;
+
   // Elementos do fluxo de edição ADM
   const displayView = document.getElementById('wifiDisplayView');
   const editForm = document.getElementById('wifiEditForm');
@@ -1212,11 +1218,31 @@ function initWifiModal() {
   const ssidInput = document.getElementById('wifiEditSsidInput');
   const passwordInput = document.getElementById('wifiEditPasswordInput');
 
-  if (!wifiModal) return;
+  if (!wifiModal && !wifiGateModal) return;
 
   const isUserAdmin = () => {
     return (typeof AdminManager !== 'undefined' && AdminManager.isAdmin && AdminManager.isAdmin()) ||
       sessionStorage.getItem('sobrado_admin_auth') === 'true';
+  };
+
+  const isWifiUnlocked = () => {
+    return localStorage.getItem('texas_wifi_unlocked') === 'true' || isUserAdmin();
+  };
+
+  const openWifiGate = () => {
+    if (!wifiGateModal) return;
+    wifiGateModal.style.display = 'flex';
+    wifiGateModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeWifiGate = () => {
+    if (!wifiGateModal) return;
+    wifiGateModal.classList.remove('active');
+    wifiGateModal.style.display = 'none';
+    if (!wifiModal || !wifiModal.classList.contains('active')) {
+      document.body.style.overflow = '';
+    }
   };
 
   const resetModalMode = () => {
@@ -1233,12 +1259,17 @@ function initWifiModal() {
   };
 
   const openWifi = () => {
+    if (!wifiModal) return;
     resetModalMode();
     wifiModal.classList.add('active');
     document.body.style.overflow = 'hidden';
   };
 
+  // Expõe a função globalmente conforme contrato de integração
+  window.openWifiModal = openWifi;
+
   const closeWifi = () => {
+    if (!wifiModal) return;
     wifiModal.classList.remove('active');
     document.body.style.overflow = '';
     setTimeout(resetModalMode, 250);
@@ -1247,19 +1278,70 @@ function initWifiModal() {
   btnOpenWifiList.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      openWifi();
+      if (!isWifiUnlocked() && wifiGateModal) {
+        openWifiGate();
+      } else {
+        openWifi();
+      }
     });
+  });
+
+  // Ação de seguir no Instagram e desbloquear a senha
+  if (btnFollowAndUnlock) {
+    btnFollowAndUnlock.addEventListener('click', () => {
+      localStorage.setItem('texas_wifi_unlocked', 'true');
+      closeWifiGate();
+      setTimeout(() => {
+        openWifi();
+      }, 500);
+    });
+  }
+
+  // Fechamento do Gate de Desbloqueio
+  if (btnCloseWifiGate) {
+    btnCloseWifiGate.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeWifiGate();
+    });
+  }
+
+  if (gateBackdrop) {
+    gateBackdrop.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeWifiGate();
+    });
+  }
+
+  if (wifiGateModal) {
+    wifiGateModal.addEventListener('click', (e) => {
+      if (e.target === wifiGateModal) {
+        closeWifiGate();
+      }
+    });
+  }
+
+  // Tecla Escape para fechar modais
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (wifiGateModal && wifiGateModal.style.display !== 'none') {
+        closeWifiGate();
+      } else if (wifiModal && wifiModal.classList.contains('active')) {
+        closeWifi();
+      }
+    }
   });
 
   if (btnCloseWifi) {
     btnCloseWifi.addEventListener('click', closeWifi);
   }
 
-  wifiModal.addEventListener('click', (e) => {
-    if (e.target === wifiModal) {
-      closeWifi();
-    }
-  });
+  if (wifiModal) {
+    wifiModal.addEventListener('click', (e) => {
+      if (e.target === wifiModal) {
+        closeWifi();
+      }
+    });
+  }
 
   // Copiar senha
   if (btnCopyWifi) {
